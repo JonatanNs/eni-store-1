@@ -11,16 +11,17 @@
     </div>
   </div>
 </div>
-<!-- @if(articles){
-  <app-article-list [articlesList]="articles"></app-article-list>
-} @else{
-  <p>Rien</p>
-} -->
-<!-- async pipe gère le chargement automatiquement -->
+
+
 <div *ngIf="articles$ | async as articles; else loading">
   <app-article-list [articlesList]="articles"></app-article-list>
 </div>
 
 <ng-template #loading>
-  <div class="text-center">Chargement...</div>
+  <p>Chargemennt...</p>
+  <span class="loading loading-ring loading-xs"></span>
+  <span class="loading loading-ring loading-sm"></span>
+  <span class="loading loading-ring loading-md"></span>
+  <span class="loading loading-ring loading-lg"></span>
+  <span class="loading loading-ring loading-xl"></span>
 </ng-template>

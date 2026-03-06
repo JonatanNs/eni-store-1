@@ -17,5 +17,8 @@ export class HomePage {
 
   private homeService = inject(HomeService);
 
+  //page : number = 1;
+  //perPage : number = 5;
+
   articles$: Observable<IPageable<IArticle>> = this.homeService.getArticles(1, 10);
 }

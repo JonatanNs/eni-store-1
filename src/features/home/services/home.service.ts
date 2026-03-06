@@ -12,11 +12,12 @@ export class HomeService {
 
   private http = inject(HttpClient);
   
-  jsonServer_url = ENVIRONMENT.apiUrl;
-  newsUrl = `${this.jsonServer_url}/articles`;
+
+  baseUrl = ENVIRONMENT.apiUrl;
+  allurl = `${this.baseUrl}/articles`;
 
   getArticles(page : number, perPage : number) : Observable<IPageable<IArticle>>{
-    return this.http.get<IPageable<IArticle>>(`${this.newsUrl}?_page=${page}&_per_page=${perPage}`);
+    return this.http.get<IPageable<IArticle>>(`${this.allurl}?_page=${page}&_per_page=${perPage}`);
   }
 }
 

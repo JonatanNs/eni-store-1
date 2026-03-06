@@ -11,5 +11,9 @@ import { IPageable } from '../../../../shared/models/IPageable';
   styleUrl: './article-list.scss',
 })
 export class ArticleList {
-  @Input({ required: true }) articlesList! : IPageable<IArticle>;
+  @Input({ required: true }) articlesList! : IPageable<IArticle>;  
+  // @Input({ required: true }) page! : number;
+  // @Input({ required: true }) perPage! : number;
+
 }
+
