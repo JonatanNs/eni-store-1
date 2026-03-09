@@ -1,9 +1,10 @@
 package fr.eni.tpenistore1.user.mongo;
 
-import fr.eni.tpenistore1.dtos.RegisterRequest;
+import fr.eni.tpenistore1.dtos.RegisterRequestDTO;
 import fr.eni.tpenistore1.dtos.UserDTO;
 import fr.eni.tpenistore1.generics.GenericMongoService;
 import fr.eni.tpenistore1.user.IUserService;
+import fr.eni.tpenistore1.user.RoleUser;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class UserMongoService extends GenericMongoService<UserDocument, String, 
     }
 
     @Override
-    public UserDTO register(RegisterRequest request) {
+    public UserDTO register(RegisterRequestDTO request) {
         UserDocument user = new UserDocument();
         user.setEmail(request.getEmail());
         user.setFirstName(request.getFirstName());
@@ -52,7 +53,7 @@ public class UserMongoService extends GenericMongoService<UserDocument, String, 
     }
 
     @Override
-    public UserDTO login(RegisterRequest request) {
+    public UserDTO login(RegisterRequestDTO request) {
 
         Optional<UserDocument> userLogin = findByEmail(request.getEmail());
 
@@ -60,7 +61,8 @@ public class UserMongoService extends GenericMongoService<UserDocument, String, 
         user.setEmail(userLogin.get().getEmail());
         user.setFirstName(userLogin.get().getFirstName());
         user.setLastName(userLogin.get().getLastName());
-        user.setPassword(userLogin.get().getPassword()); // déjà encodé
+        user.setPassword(userLogin.get().getPassword());
+        user.setRoles(userLogin.get().getRoles());
         // sauvegarde
         return userMongoMapper.userToUserDTO(user);
     }

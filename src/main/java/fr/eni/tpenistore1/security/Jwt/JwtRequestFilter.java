@@ -35,63 +35,106 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         this.userDetailService = userDetailService;
     }
 
+    //    @Override
+//    protected void doFilterInternal(
+//            HttpServletRequest request,
+//            @NonNull HttpServletResponse response,
+//            @NonNull FilterChain filterChain) throws ServletException, IOException {
+//
+//        String requestTokenHeader = request.getHeader("Authorization");
+//
+//        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+//            String jwtToken = requestTokenHeader.substring(7);
+//            String email = null;
+//
+//            try {
+//                email = jwtTokenUtil.extractUsername(jwtToken);
+//            } catch (io.jsonwebtoken.ExpiredJwtException ex) {
+//                // TOKEN EXPIRÉ → on renvoie une réponse propre
+//                ApiResponse<?> error = new ApiResponse<>(
+//                        "701",
+//                        LocalDateTime.now(),
+//                        "Votre session a expiré. Veuillez vous reconnecter.",
+//                        null
+//                );
+//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                new ObjectMapper().writeValue(response.getOutputStream(), error);
+//                return;
+//            } catch (Exception ex) {
+//                // Autres erreurs du token
+//                ApiResponse<?> error = new ApiResponse<>(
+//                        "701",
+//                        LocalDateTime.now(),
+//                        "Votre session a expiré. Veuillez vous reconnecter.",
+//                        null
+//                );
+//                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                new ObjectMapper().writeValue(response.getOutputStream(), error);
+//                return;
+//            }
+//            // Si email extrait et pas déjà authentifié
+//            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//                UserDetails userDetails = userDetailService.loadUserByUsername(email);
+//
+//                if (jwtTokenUtil.valideToken(jwtToken, userDetails)) {
+//                    UsernamePasswordAuthenticationToken userPasswordAuthToken =
+//                            new UsernamePasswordAuthenticationToken(
+//                                    userDetails,
+//                                    null,
+//                                    userDetails.getAuthorities()
+//                            );
+//                    userPasswordAuthToken.setDetails(
+//                            new WebAuthenticationDetailsSource().buildDetails(request)
+//                    );
+//                    SecurityContextHolder.getContext().setAuthentication(userPasswordAuthToken);
+//                }
+//            }
+//        }
+//        filterChain.doFilter(request, response);
+//    }
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        String requestTokenHeader = request.getHeader("Authorization");
+        try {
 
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            String jwtToken = requestTokenHeader.substring(7);
-            String email = null;
+            String requestTokenHeader = request.getHeader("Authorization");
 
-            try {
-                email = jwtTokenUtil.extractUsername(jwtToken);
-            } catch (io.jsonwebtoken.ExpiredJwtException ex) {
-                // TOKEN EXPIRÉ → on renvoie une réponse propre
-                ApiResponse<?> error = new ApiResponse<>(
-                        "701",
-                        LocalDateTime.now(),
-                        "Votre session a expiré. Veuillez vous reconnecter.",
-                        null
-                );
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
-                return;
-            } catch (Exception ex) {
-                // Autres erreurs du token
-                ApiResponse<?> error = new ApiResponse<>(
-                        "701",
-                        LocalDateTime.now(),
-                        "Votre session a expiré. Veuillez vous reconnecter.",
-                        null
-                );
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
-                return;
-            }
-            // Si email extrait et pas déjà authentifié
-            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailService.loadUserByUsername(email);
+            if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 
-                if (jwtTokenUtil.valideToken(jwtToken, userDetails)) {
-                    UsernamePasswordAuthenticationToken userPasswordAuthToken =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    userDetails.getAuthorities()
-                            );
-                    userPasswordAuthToken.setDetails(
-                            new WebAuthenticationDetailsSource().buildDetails(request)
-                    );
-                    SecurityContextHolder.getContext().setAuthentication(userPasswordAuthToken);
+                String jwtToken = requestTokenHeader.substring(7);
+                String email = jwtTokenUtil.extractUsername(jwtToken);
+
+                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                    UserDetails userDetails = userDetailService.loadUserByUsername(email);
+
+                    if (jwtTokenUtil.valideToken(jwtToken, userDetails)) {
+
+                        UsernamePasswordAuthenticationToken authToken =
+                                new UsernamePasswordAuthenticationToken(
+                                        userDetails,
+                                        null,
+                                        userDetails.getAuthorities()
+                                );
+
+                        authToken.setDetails(
+                                new WebAuthenticationDetailsSource().buildDetails(request)
+                        );
+
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
                 }
             }
+
+        } catch (Exception ex) {
+            SecurityContextHolder.clearContext();
         }
+
         filterChain.doFilter(request, response);
     }
 }

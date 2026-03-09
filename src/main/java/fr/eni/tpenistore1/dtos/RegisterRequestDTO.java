@@ -1,6 +1,9 @@
 package fr.eni.tpenistore1.dtos;
 
+import fr.eni.tpenistore1.user.RoleUser;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -64,4 +67,5 @@ public class RegisterRequestDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

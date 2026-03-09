@@ -1,8 +1,11 @@
 package fr.eni.tpenistore1.generics;
 
+import fr.eni.tpenistore1.record.ApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -25,27 +28,46 @@ public class GenericSQLService<E,
     }
 
     @Override
-    public List<E> getAll() {
-        return repo.findAll();
+    public ApiResponse<Page<E>> getAll(Pageable pageable) {
+        return new ApiResponse<>(
+                "200",
+                LocalDateTime.now(),
+                "La liste des éléments a été récupérés avec succès.",
+                repo.findAll(pageable));
     }
 
     @Override
-    public Optional<E> getById(ID id) {
-        return repo.findById(id);
+    public ApiResponse<Optional<E>> getById(ID id) {
+        return new ApiResponse<>("200",
+                LocalDateTime.now(),
+                "Article récupéré avec succès.",
+                repo.findById(id));
     }
 
     @Override
-    public void deleteById(ID id) {
+    public ApiResponse<?> deleteById(ID id) {
         repo.deleteById(id);
+        return new ApiResponse<>("200",
+                LocalDateTime.now(),
+                "Article supprimé avec succès.",
+                null);
     }
 
     @Override
-    public void save(E article) {
-        repo.save(article);
-    }
-
-    @Override
-    public void patch(ID id, E entity) {
+    public ApiResponse<E> save(E entity) {
         repo.save(entity);
+        return new ApiResponse<>("200",
+                LocalDateTime.now(),
+                "Article enregistré avec succès.",
+                entity);
+    }
+
+    @Override
+    public ApiResponse<E> patch(ID id, E entity) {
+        repo.save(entity);
+        return new ApiResponse<>("200",
+                LocalDateTime.now(),
+                "Element modifié avec succès.",
+                entity);
     }
 }

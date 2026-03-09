@@ -1,6 +1,10 @@
 package fr.eni.tpenistore1.generics;
 
-import java.util.List;
+
+import fr.eni.tpenistore1.record.ApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 /**
@@ -11,9 +15,9 @@ import java.util.Optional;
  * @since 25/02/2026 13:57
  */
 public interface I_GenericService<E,ID> {
-    List<E> getAll();
-    Optional<E> getById(ID id);
-    void deleteById(ID id);
-    void save(E entity);
-    void patch(ID id, E entity);
+    ApiResponse<Page<E>> getAll(Pageable pageable);
+    ApiResponse<Optional<E>> getById(ID id);
+    ApiResponse<?> deleteById(ID id);
+    ApiResponse<E> save(E entity);
+    ApiResponse<E> patch(ID id, E entity);
 }

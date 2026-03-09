@@ -7,6 +7,9 @@ package fr.eni.tpenistore1.dtos;
  * @version 1.0
  * @since 03/03/2026 16:35
  */
+
+import fr.eni.tpenistore1.user.RoleUser;
+
 /**
  * DTO exposé côté API pour l'utilisateur.
  */
@@ -14,6 +17,7 @@ public class UserDTO {
     private String email;
     private String firstName;
     private String lastName;
+    private String role;
 
     public String getEmail() {
         return email;
@@ -37,5 +41,13 @@ public class UserDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getRoleUser() {
+        return role;
+    }
+
+    public void setRoleUser(String role) {
+        this.role = role;
     }
 }

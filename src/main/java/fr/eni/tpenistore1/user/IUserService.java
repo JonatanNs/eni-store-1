@@ -1,6 +1,6 @@
 package fr.eni.tpenistore1.user;
 
-import fr.eni.tpenistore1.dtos.RegisterRequest;
+import fr.eni.tpenistore1.dtos.RegisterRequestDTO;
 import fr.eni.tpenistore1.dtos.UserDTO;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Optional;
@@ -34,7 +34,7 @@ public interface IUserService {
 
     UserDetails save(UserDetails user);
 
-    UserDTO register(RegisterRequest request);
+    UserDTO register(RegisterRequestDTO request);
 
-    UserDTO login(RegisterRequest request);
+    UserDTO login(RegisterRequestDTO request);
 }

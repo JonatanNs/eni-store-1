@@ -102,9 +102,8 @@ public class UserEntity extends BaseEntitySQL implements UserDetails {
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> roles.name());
+        return List.of(new SimpleGrantedAuthority(roles.name()));
     }
-
     @JsonIgnore
     @Override
     public String getUsername() {
