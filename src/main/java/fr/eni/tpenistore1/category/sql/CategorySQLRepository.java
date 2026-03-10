@@ -1,5 +1,6 @@
 package fr.eni.tpenistore1.category.sql;
 
+import fr.eni.tpenistore1.category.Category;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,5 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 03/03/2026 09:21
  */
 @Profile("sql")
-public interface CategorySQLRepository extends JpaRepository<CategoryEntity, Long> {
+public interface CategorySQLRepository extends JpaRepository<Category, String> {
 }

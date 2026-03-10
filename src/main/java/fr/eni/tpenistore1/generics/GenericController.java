@@ -2,11 +2,11 @@ package fr.eni.tpenistore1.generics;
 
 import fr.eni.tpenistore1.exceptions.NotFoundException;
 import fr.eni.tpenistore1.record.ApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * Classe 'genericController'
@@ -26,17 +26,13 @@ public class GenericController<E, ID, S extends I_GenericService<E, ID>>{
     /**
      *
      * Méthode en charge d'afficher tous les élements.
+     *
      * @return
      * @throws RuntimeException
      */
     @GetMapping
-    public ResponseEntity<?> getAll() throws RuntimeException {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(
-                new ApiResponse<>(
-                        "200",
-                        LocalDateTime.now(),
-                        "La liste des éléments a été récupérés avec succès.",
-                        service.getAll()));
+    public ResponseEntity<ApiResponse<Page<E>>> getAll(Pageable pageable) throws RuntimeException {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.getAll(pageable));
     }
 
     /**
@@ -49,12 +45,8 @@ public class GenericController<E, ID, S extends I_GenericService<E, ID>>{
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getId(@PathVariable ID id) throws RuntimeException{
-            if(service.getById(id).isPresent()){
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(
-                        new ApiResponse<>("200",
-                                            LocalDateTime.now(),
-                                            "Article récupéré avec succès.",
-                                            service.getById(id)));
+            if(service.getById(id).data().isPresent()){
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.getById(id));
             } else{
                 throw new NotFoundException("Impossible de récupérer l'élément.");
             }

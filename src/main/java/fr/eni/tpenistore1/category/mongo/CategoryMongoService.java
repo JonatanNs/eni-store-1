@@ -1,5 +1,6 @@
 package fr.eni.tpenistore1.category.mongo;
 
+import fr.eni.tpenistore1.category.Category;
 import fr.eni.tpenistore1.generics.GenericMongoService;
 import fr.eni.tpenistore1.generics.I_GenericService;
 import org.springframework.context.annotation.Profile;
@@ -16,18 +17,22 @@ import java.util.Optional;
  */
 @Service
 @Profile("mongo")
-public class CategoryMongoService extends GenericMongoService<CategoryDocument, String, CategoryMongoRepository> implements I_GenericService<CategoryDocument, String> {
+public class CategoryMongoService extends GenericMongoService<Category, String, CategoryMongoRepository> implements I_GenericService<Category, String> {
 
     /**
      *
      * Constructeur
      * @param repo
+     * @param
      */
-    public CategoryMongoService(CategoryMongoRepository repo) {
+    public CategoryMongoService(CategoryMongoRepository repo ) {
         super(repo);
     }
 
-    public Optional<CategoryDocument> findByLabel(String label){
+
+
+
+    public Optional<Category> findByLabel(String label){
         return repo.findByLabel(label);
     }
 }

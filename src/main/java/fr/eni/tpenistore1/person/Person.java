@@ -1,13 +1,8 @@
-package fr.eni.tpenistore1.user.mongo;
+package fr.eni.tpenistore1.person;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fr.eni.tpenistore1.core.BaseEntityMongo;
-import fr.eni.tpenistore1.core.BaseEntitySQL;
-import fr.eni.tpenistore1.user.RoleUser;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Transient;
+import fr.eni.tpenistore1.person.core.BaseEntity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -17,20 +12,18 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * Classe 'UserEntity' en charge de
+ * Classe 'User' en charge de
  *
  * @author jnsualu2026
  * @version 1.0
- * @since 27/02/2026 13:33
+ * @since 10/03/2026 09:57
  */
-@Document("userDocument")
-public class UserDocument extends BaseEntityMongo implements UserDetails {
+@Entity(name = "persons")
+@Document("persons")
+public class Person extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     @NotBlank(message = "Le prénom ne peux pas être vide.")
     private String firstName;
@@ -46,21 +39,21 @@ public class UserDocument extends BaseEntityMongo implements UserDetails {
 
     @Column(nullable = false)
     @NotBlank(message = "Le mot de passe ne peux pas être vide.")
-//    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\\w\\s]).{12,}$",
-//             message = "Le mot de passe doit contenir au moins 12 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\\w\\s]).{12,}$",
+            message = "Le mot de passe doit contenir au moins 12 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.")
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private RoleUser roles = RoleUser.USER;
+    private RolePerson roles = RolePerson.USER;
 
-    public UserDocument(String firstName, String lastName, String email, String password) {
+    public Person() {
+    }
+
+    public Person(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-    }
-
-    public UserDocument() {
     }
 
     @Transient
@@ -96,11 +89,11 @@ public class UserDocument extends BaseEntityMongo implements UserDetails {
         this.password = password;
     }
 
-    public RoleUser getRoles() {
+    public RolePerson getRoles() {
         return roles;
     }
 
-    public void setRoles(RoleUser roles) {
+    public void setRoles(RolePerson roles) {
         this.roles = roles;
     }
 

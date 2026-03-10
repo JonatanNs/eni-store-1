@@ -1,5 +1,6 @@
 package fr.eni.tpenistore1.article.sql;
 
+import fr.eni.tpenistore1.article.Article;
 import fr.eni.tpenistore1.generics.GenericSQLService;
 import fr.eni.tpenistore1.generics.I_GenericService;
 import org.springframework.context.annotation.Profile;
@@ -17,12 +18,14 @@ import java.util.Optional;
 
 @Profile("sql")
 @Service
-public class ArticleSQLService extends GenericSQLService<ArticleEntity, Long, ArticleSQLRepository> implements I_GenericService<ArticleEntity, Long> {
-    public ArticleSQLService(ArticleSQLRepository repo) {
+public class ArticleSQLService extends GenericSQLService<Article, String, ArticleSQLRepository> implements I_GenericService<Article, String> {
+
+
+    public ArticleSQLService(ArticleSQLRepository repo ) {
         super(repo);
     }
 
-    public Optional<ArticleEntity> findByTitle(String title){
+    public Optional<Article> findByTitle(String title){
         return repo.findByTitle(title);
     }
 }

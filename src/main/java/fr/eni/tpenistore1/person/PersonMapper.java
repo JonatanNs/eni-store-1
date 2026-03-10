@@ -1,6 +1,6 @@
-package fr.eni.tpenistore1.user.mongo;
+package fr.eni.tpenistore1.person;
 
-import fr.eni.tpenistore1.dtos.UserDTO;
+import fr.eni.tpenistore1.dtos.PersonDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,8 +12,8 @@ import org.mapstruct.Mapping;
  * @since 03/03/2026 14:52
  */
 @Mapper(componentModel = "spring")
-public interface UserMongoMapper {
+public interface PersonMapper {
 
     @Mapping(source = "roles", target = "roleUser")
-    UserDTO userToUserDTO(UserDocument user);
+    PersonDTO userToUserDTO(Person user);
 }

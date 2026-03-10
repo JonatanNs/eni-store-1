@@ -1,6 +1,6 @@
 package fr.eni.tpenistore1.security;
 
-import fr.eni.tpenistore1.user.UserRepository;
+import fr.eni.tpenistore1.person.IPersonService;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,15 +17,15 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository repository;
+    private final IPersonService service;
 
-    public CustomUserDetailsService(UserRepository repository) {
-        this.repository = repository;
+    public CustomUserDetailsService(IPersonService service) {
+        this.service = service;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return repository.findByEmail(email)
+        return service.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("L'utilisateur : " + email + " n'existe pas"));
     }
 }

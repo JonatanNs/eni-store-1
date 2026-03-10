@@ -1,8 +1,11 @@
-package fr.eni.tpenistore1.core;
+package fr.eni.tpenistore1.person.core;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Classe 'BaseEntity' en charge de
@@ -12,11 +15,11 @@ import java.time.LocalDateTime;
  * @since 27/02/2026 13:46
  */
 @MappedSuperclass
-public class BaseEntitySQL {
+@EntityListeners(AuditingEntityListener.class)
+public class BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Version
     private int version;
@@ -24,26 +27,28 @@ public class BaseEntitySQL {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @PrePersist // avant insert
+    @PrePersist
     protected void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID().toString();
+        }
+    }
+
+    public BaseEntity() {
         createdAt = LocalDateTime.now();
-        updatedAt = createdAt;
     }
 
-    @PreUpdate // avant update
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
     public int getVersion() {
         return version;
     }
+
     public void setVersion(int version) {
         this.version = version;
     }
@@ -51,6 +56,7 @@ public class BaseEntitySQL {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }

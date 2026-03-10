@@ -1,5 +1,6 @@
 package fr.eni.tpenistore1.category.sql;
 
+import fr.eni.tpenistore1.category.Category;
 import fr.eni.tpenistore1.generics.GenericSQLService;
 import fr.eni.tpenistore1.generics.I_GenericService;
 import org.springframework.context.annotation.Profile;
@@ -14,13 +15,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Profile("sql")
-public class CategorySQLService extends GenericSQLService<CategoryEntity, Long, CategorySQLRepository> implements I_GenericService<CategoryEntity, Long> {
+public class CategorySQLService extends GenericSQLService<Category, String, CategorySQLRepository> implements I_GenericService<Category, String> {
     /**
      *
      * Constructeur
      * @param repo
+     * @param
      */
-    public CategorySQLService(CategorySQLRepository repo) {
+    public CategorySQLService(CategorySQLRepository repo ) {
         super(repo);
     }
 }

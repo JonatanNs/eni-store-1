@@ -1,13 +1,14 @@
 package fr.eni.tpenistore1.generics;
 
 import fr.eni.tpenistore1.exceptions.NotFoundException;
+import fr.eni.tpenistore1.person.PersonMapper;
 import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class AdminGenericController<E, ID, S extends I_GenericService<E, ID>> {
 
     protected final S service;
+    private PersonMapper personMapper;
 
     public AdminGenericController(S service) {
         this.service = service;
@@ -32,13 +34,25 @@ public class AdminGenericController<E, ID, S extends I_GenericService<E, ID>> {
      * @throws RuntimeException
      */
     @GetMapping
-    public ResponseEntity<?> getAll() throws RuntimeException {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(
-                new ApiResponse<>(
-                        "200",
-                        LocalDateTime.now(),
-                        "La liste des éléments a été récupérés avec succès.",
-                        service.getAll()));
+    public ResponseEntity<ApiResponse<Page<E>>> getAll(Pageable pageable) throws RuntimeException {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.getAll(pageable));
+    }
+
+    /**
+     *
+     * Méthode en charge de retourner un article par l'id.
+     *
+     * @param id
+     * @return
+     * @throws RuntimeException
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getId(@PathVariable ID id) throws RuntimeException{
+        if(service.getById(id).data().isPresent()){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.getById(id));
+        } else{
+            throw new NotFoundException("Impossible de récupérer l'élément.");
+        }
     }
 
     /**
@@ -50,11 +64,7 @@ public class AdminGenericController<E, ID, S extends I_GenericService<E, ID>> {
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody E entity) {
         service.save(entity);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>("200",
-                        LocalDateTime.now(),
-                        "Elément ajouté avec succès",
-                        entity));
+        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
 
     /**
@@ -66,11 +76,9 @@ public class AdminGenericController<E, ID, S extends I_GenericService<E, ID>> {
      */
     @DeleteMapping("supprimer/{id}")
     public ResponseEntity<?> deleteById(@PathVariable ID id) throws RuntimeException {
-        if (service.getById(id).isPresent()) {
+        if (service.getById(id).data().isPresent()) {
             service.deleteById(id);
-            Optional<E> elements = service.getById(id);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(
-                    new ApiResponse<>("200", LocalDateTime.now(),   " Supprimé avec success" , null));
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteById(id));
         } else {
             throw new NotFoundException("Elément introuvable");
         }
@@ -86,17 +94,12 @@ public class AdminGenericController<E, ID, S extends I_GenericService<E, ID>> {
     @PatchMapping("modifier/{id}")
     public ResponseEntity<?> patch(@PathVariable ID id, @Valid @RequestBody E entity) {
 
-        Optional<E> existing = service.getById(id);
+        Optional<E> existing = service.getById(id).data();
 
         if (existing.isEmpty()) {
             throw new NotFoundException("Elément introuvable");
         }
-
         service.patch(id, entity);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ApiResponse<>("200",
-                        LocalDateTime.now(),
-                        "Elément modifié avec succès.",
-                        entity));
+        return ResponseEntity.status(HttpStatus.OK).body(service.patch(id, entity));
     }
 }

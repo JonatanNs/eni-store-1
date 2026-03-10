@@ -16,14 +16,14 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableJpaRepositories(
         basePackages = {
                 "fr.eni.tpenistore1.article.sql",
-                "fr.eni.tpenistore1.user.sql",
+                "fr.eni.tpenistore1.person.sql",
                 "fr.eni.tpenistore1.category.sql",
         }
 )
 @EnableMongoRepositories(
         basePackages = {
                 "fr.eni.tpenistore1.article.mongo",
-                "fr.eni.tpenistore1.user.mongo",
+                "fr.eni.tpenistore1.person.mongo",
                 "fr.eni.tpenistore1.category.mongo"
         }
 )

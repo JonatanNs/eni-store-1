@@ -1,19 +1,17 @@
 package fr.eni.tpenistore1.dtos;
 
 /**
- * Classe 'UserDTO' en charge de
+ * Classe 'PersonDTO' en charge de
  *
  * @author jnsualu2026
  * @version 1.0
  * @since 03/03/2026 16:35
  */
 
-import fr.eni.tpenistore1.user.RoleUser;
-
 /**
  * DTO exposé côté API pour l'utilisateur.
  */
-public class UserDTO {
+public class PersonDTO {
     private String email;
     private String firstName;
     private String lastName;

@@ -16,12 +16,11 @@ import java.util.Optional;
  * @since 25/02/2026 13:57
  */
 public class GenericSQLService<E,
-                             ID,
-                             R extends JpaRepository<E, ID>>
-                             implements I_GenericService<E, ID>{
+        ID,
+        R extends JpaRepository<E, ID>>
+        implements I_GenericService<E, ID> {
 
     protected final R repo;
-
 
     public GenericSQLService(R repo) {
         this.repo = repo;
@@ -29,10 +28,9 @@ public class GenericSQLService<E,
 
     @Override
     public ApiResponse<Page<E>> getAll(Pageable pageable) {
-        return new ApiResponse<>(
-                "200",
+        return new ApiResponse<>("200",
                 LocalDateTime.now(),
-                "La liste des éléments a été récupérés avec succès.",
+                "Articles récupéré avec succès.",
                 repo.findAll(pageable));
     }
 
@@ -54,11 +52,11 @@ public class GenericSQLService<E,
     }
 
     @Override
-    public ApiResponse<E> save(E entity) {
+    public ApiResponse<?> save(E entity) {
         repo.save(entity);
         return new ApiResponse<>("200",
                 LocalDateTime.now(),
-                "Article enregistré avec succès.",
+                "Elément enregistré avec succès.",
                 entity);
     }
 

@@ -1,4 +1,4 @@
-package fr.eni.tpenistore1.user;
+package fr.eni.tpenistore1.person;
 
 /**
  * Classe 'RoleUser' en charge d'énumérer les différents roles que peut avoir un utilisateur.
@@ -7,7 +7,7 @@ package fr.eni.tpenistore1.user;
  * @version 1.0
  * @since 27/02/2026 14:11
  */
-public enum RoleUser {
+public enum RolePerson {
     USER,
     ADMIN,
     ADMIN_SUPER;

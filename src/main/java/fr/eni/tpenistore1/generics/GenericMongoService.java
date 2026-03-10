@@ -51,13 +51,14 @@ public class GenericMongoService<E, ID, R extends MongoRepository<E, ID>>
     }
 
     @Override
-    public ApiResponse<E> save(E entity) {
+    public ApiResponse<?> save(E entity) {
         repo.save(entity);
         return new ApiResponse<>("200",
                 LocalDateTime.now(),
-                "Article enregistré avec succès.",
+                "Action effectuée avec succès.",
                 entity);
     }
+
 
     @Override
     public ApiResponse<E> patch(ID id, E entity) {

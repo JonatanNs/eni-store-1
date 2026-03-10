@@ -1,5 +1,6 @@
 package fr.eni.tpenistore1.category.mongo;
 
+import fr.eni.tpenistore1.category.Category;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -19,6 +20,6 @@ import java.util.Optional;
  * @since 02/03/2026 16:23
  */
 @Profile("mongo")
-public interface CategoryMongoRepository extends MongoRepository<CategoryDocument, String> {
-    Optional<CategoryDocument> findByLabel(String label);
+public interface CategoryMongoRepository extends MongoRepository<Category, String> {
+    Optional<Category> findByLabel(String label);
 }
