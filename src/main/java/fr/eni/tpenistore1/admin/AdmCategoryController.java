@@ -1,13 +1,13 @@
 package fr.eni.tpenistore1.admin;
 
 import fr.eni.tpenistore1.category.Category;
-import fr.eni.tpenistore1.category.CategoryService;
+import fr.eni.tpenistore1.category.ICategoryService;
 import fr.eni.tpenistore1.generics.AdminGenericController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Classe 'AdmCategoryController' en charge de
+ * Classe 'AdmCategoryController'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/admin/categories")
-public class AdmCategoryController extends AdminGenericController<Category, String, CategoryService> {
+public class AdmCategoryController extends AdminGenericController<Category, String, ICategoryService> {
 
-    public AdmCategoryController(CategoryService service) {
-        super(service);
+    private final ICategoryService categoryService;
+
+    public AdmCategoryController(ICategoryService categoryService, ICategoryService categoryService1) {
+        super(categoryService);
+        this.categoryService = categoryService;
     }
 }

@@ -57,7 +57,7 @@ public class AuthController {
     @PostMapping("/inscription")
     public ResponseEntity<ApiResponse<PersonDTO>> showRegister(@Valid @RequestBody Person person) {
 
-        if (service.findByEmail(person.getEmail()).isPresent()) {
+        if (service.findByEmail(person.getEmail()).data().isPresent()) {
             throw new AlreadyExistsException("Email : " + person.getEmail() + " existe déja connecté vous !");
         }
         if (!PASSWORD_REGEX.matcher(person.getPassword()).matches()) {

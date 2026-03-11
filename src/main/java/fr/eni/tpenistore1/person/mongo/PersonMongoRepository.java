@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 /**
- * Classe 'UserMongoRepository' en charge de
+ * Classe 'UserMongoRepository'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -16,5 +16,4 @@ import java.util.Optional;
 @Profile("mongo")
 public interface PersonMongoRepository extends MongoRepository<Person, String> {
     Optional<Person> findByEmail(String email);
-
 }

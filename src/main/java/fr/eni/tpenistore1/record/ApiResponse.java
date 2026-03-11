@@ -10,4 +10,5 @@ import java.time.LocalDateTime;
  * @since 27/02/2026 11:18
  */
 public record ApiResponse<T>( String code, LocalDateTime timestamp , String message, T data) {
+
 }

@@ -4,8 +4,10 @@ import fr.eni.tpenistore1.category.Category;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
- * Classe 'CategorySQLRepository' en charge de
+ * Classe 'CategorySQLRepository'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -13,4 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 @Profile("sql")
 public interface CategorySQLRepository extends JpaRepository<Category, String> {
+    Optional<Category> findByLabel(String label);
 }

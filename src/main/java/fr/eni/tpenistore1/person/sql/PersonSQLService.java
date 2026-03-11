@@ -1,17 +1,17 @@
 package fr.eni.tpenistore1.person.sql;
 
-import fr.eni.tpenistore1.generics.GenericSQLService;
-import fr.eni.tpenistore1.generics.I_GenericService;
+import fr.eni.tpenistore1.generics.GenericService;
 import fr.eni.tpenistore1.person.IPersonService;
 import fr.eni.tpenistore1.person.Person;
+import fr.eni.tpenistore1.record.ApiResponse;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
-
 /**
- * Classe 'UserSQLService' en charge de
+ * Classe 'UserSQLService'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -19,15 +19,17 @@ import java.util.Optional;
  */
 @Service
 @Profile("sql")
-public class PersonSQLService extends GenericSQLService<Person, String, PersonSQLRepository> implements I_GenericService<Person, String>, IPersonService {
+public class PersonSQLService extends GenericService<Person, String, PersonSQLRepository> implements IPersonService {
 
-    public PersonSQLService(PersonSQLRepository repo ) {
-        super(repo);
+    public PersonSQLService(PersonSQLRepository repository/*PersonMapper personMapper*/) {
+        super(repository);
     }
 
-    @Override
-    public Optional<Person> findByEmail(String email) {
-        return repo.findByEmail(email);
+    public ApiResponse<Optional<Person>> findByEmail(String email) {
+        return new ApiResponse<>("200",
+                LocalDateTime.now(),
+                "Element trouvé avec succès.",
+                repository.findByEmail(email));
     }
 }
 

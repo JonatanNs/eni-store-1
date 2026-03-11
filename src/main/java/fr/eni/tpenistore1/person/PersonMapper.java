@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * Classe 'UserMongoMapper' en charge de
+ * Classe 'UserMongoMapper'
  *
  * @author jnsualu2026
  * @version 1.0

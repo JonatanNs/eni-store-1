@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Classe 'User' en charge de
+ * Classe 'User'
  *
  * @author jnsualu2026
  * @version 1.0

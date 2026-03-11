@@ -6,14 +6,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+
 /**
- * Classe 'ArticleSQLRepository' en charge de
+ * Classe 'I_ArticleService'
  *
  * @author jnsualu2026
  * @version 1.0
- * @since 26/02/2026 14:20
+ * @since 26/02/2026 14:46
  */
+
 @Profile("sql")
 public interface ArticleSQLRepository extends JpaRepository<Article, String> {
     Optional<Article> findByTitle(String title);
+
 }

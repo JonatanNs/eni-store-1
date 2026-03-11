@@ -3,45 +3,74 @@ package fr.eni.tpenistore1.generics;
 import fr.eni.tpenistore1.record.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
- * Classe 'GenericService' en charge de
+ * Classe 'GenericService'
  *
  * @author jnsualu2026
  * @version 1.0
  * @since 09/03/2026 16:15
  */
-public class GenericService<E, ID> {
+public class GenericService<E, ID, R extends CrudRepository<E, ID> & PagingAndSortingRepository<E, ID>>
+        implements IGenericService<E, ID> {
 
-    private final I_GenericService<E, ID> iGenericService;
+    protected final R repository;
 
-    public GenericService(I_GenericService<E, ID> iGenericService) {
-        this.iGenericService = iGenericService;
+    public GenericService(R repository) {
+        this.repository = repository;
     }
 
     public ApiResponse<Page<E>> getAll(Pageable pageable) {
-        return iGenericService.getAll(pageable);
+        return new ApiResponse<>(
+                "200",
+                LocalDateTime.now(),
+                "Liste récupérée avec succès",
+                repository.findAll(pageable));
     }
 
     public ApiResponse<Optional<E>> getById(ID id) {
-        return iGenericService.getById(id);
+        return new ApiResponse<>(
+                "200",
+                LocalDateTime.now(),
+                "Element récupéré",
+                repository.findById(id));
+    }
+
+    public ApiResponse<E> save(E entity) {
+        E saved = repository.save(entity);
+
+        return new ApiResponse<>(
+                "200",
+                LocalDateTime.now(),
+                "Element enregistré",
+                saved);
+    }
+
+    @Override
+    public ApiResponse<?> patch(ID id, E entity) {
+        return new ApiResponse<>(
+                "200",
+                LocalDateTime.now(),
+                "Element enregistré",
+                repository.save(entity));
     }
 
     public ApiResponse<?> deleteById(ID id) {
-        return iGenericService.deleteById(id);
-    }
-
-    public ApiResponse<?> save(E entity) {
-        iGenericService.save(entity);
-        return new ApiResponse<>("200",
+        repository.deleteById(id);
+        return new ApiResponse<>(
+                "200",
                 LocalDateTime.now(),
-                "Elément enregistré avec succès.",
-                entity);
-    }
-
-    public ApiResponse<?> patch(ID id, E entity) {
-        return iGenericService.patch(id, entity);
+                "Element supprimé",
+                null);
     }
 }
+
+
+
+
+

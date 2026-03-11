@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * Classe 'Category' en charge de
+ * Classe 'Category'
  *
  * @author jnsualu2026
  * @version 1.0

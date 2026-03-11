@@ -1,15 +1,17 @@
 package fr.eni.tpenistore1.category.mongo;
 
 import fr.eni.tpenistore1.category.Category;
-import fr.eni.tpenistore1.generics.GenericMongoService;
-import fr.eni.tpenistore1.generics.I_GenericService;
+import fr.eni.tpenistore1.category.ICategoryService;
+import fr.eni.tpenistore1.generics.GenericService;
+import fr.eni.tpenistore1.record.ApiResponse;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
- * Classe 'CategoryMongoService' en charge de
+ * Classe 'CategoryMongoService'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -17,22 +19,16 @@ import java.util.Optional;
  */
 @Service
 @Profile("mongo")
-public class CategoryMongoService extends GenericMongoService<Category, String, CategoryMongoRepository> implements I_GenericService<Category, String> {
+public class CategoryMongoService extends GenericService<Category, String, CategoryMongoRepository> implements ICategoryService {
 
-    /**
-     *
-     * Constructeur
-     * @param repo
-     * @param
-     */
-    public CategoryMongoService(CategoryMongoRepository repo ) {
-        super(repo);
+    public CategoryMongoService(CategoryMongoRepository repository) {
+        super(repository);
     }
 
-
-
-
-    public Optional<Category> findByLabel(String label){
-        return repo.findByLabel(label);
+    public ApiResponse<Optional<Category>> findByLabel(String label) {
+        return new ApiResponse<>("200",
+                LocalDateTime.now(),
+                "Element trouvé avec succès.",
+                repository.findByLabel(label));
     }
 }

@@ -1,7 +1,6 @@
 package fr.eni.tpenistore1.generics;
 
 import fr.eni.tpenistore1.exceptions.NotFoundException;
-import fr.eni.tpenistore1.person.PersonMapper;
 import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -12,16 +11,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 /**
- * Classe 'AdminController' en charge de
+ * Classe 'AdminController'
  *
  * @author jnsualu2026
  * @version 1.0
  * @since 02/03/2026 16:44
  */
-public class AdminGenericController<E, ID, S extends I_GenericService<E, ID>> {
+public class AdminGenericController<E, ID, S extends IGenericService<E, ID>> {
 
     protected final S service;
-    private PersonMapper personMapper;
 
     public AdminGenericController(S service) {
         this.service = service;
@@ -64,7 +62,7 @@ public class AdminGenericController<E, ID, S extends I_GenericService<E, ID>> {
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody E entity) {
         service.save(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(entity));
     }
 
     /**

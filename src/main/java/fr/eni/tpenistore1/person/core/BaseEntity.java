@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Classe 'BaseEntity' en charge de
+ * Classe 'BaseEntity'
  *
  * @author jnsualu2026
  * @version 1.0

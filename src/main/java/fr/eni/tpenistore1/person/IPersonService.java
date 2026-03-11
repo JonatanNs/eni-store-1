@@ -1,5 +1,6 @@
 package fr.eni.tpenistore1.person;
 
+import fr.eni.tpenistore1.generics.IGenericService;
 import fr.eni.tpenistore1.record.ApiResponse;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 03/03/2026
  */
-public interface IPersonService {
-    Optional<Person> findByEmail(String email);
+public interface IPersonService extends IGenericService<Person, String> {
+    ApiResponse<Optional<Person>> findByEmail(String email);
     ApiResponse<?> save(Person user);
 }

@@ -1,13 +1,17 @@
 package fr.eni.tpenistore1.category.sql;
 
 import fr.eni.tpenistore1.category.Category;
-import fr.eni.tpenistore1.generics.GenericSQLService;
-import fr.eni.tpenistore1.generics.I_GenericService;
+import fr.eni.tpenistore1.category.ICategoryService;
+import fr.eni.tpenistore1.generics.GenericService;
+import fr.eni.tpenistore1.record.ApiResponse;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 /**
- * Classe 'CategorySQLService' en charge de
+ * Classe 'CategorySQLService'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -15,14 +19,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Profile("sql")
-public class CategorySQLService extends GenericSQLService<Category, String, CategorySQLRepository> implements I_GenericService<Category, String> {
-    /**
-     *
-     * Constructeur
-     * @param repo
-     * @param
-     */
-    public CategorySQLService(CategorySQLRepository repo ) {
-        super(repo);
+public class CategorySQLService extends GenericService<Category, String, CategorySQLRepository>  implements ICategoryService {
+
+    public CategorySQLService(CategorySQLRepository repository) {
+        super(repository);
+    }
+
+    public ApiResponse<Optional<Category>> findByLabel(String label) {
+        return new ApiResponse<>("200",
+                LocalDateTime.now(),
+                "Element trouvé avec succès.",
+                repository.findByLabel(label));
     }
 }

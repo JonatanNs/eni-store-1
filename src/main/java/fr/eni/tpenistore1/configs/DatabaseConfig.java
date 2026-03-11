@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 
 /**
- * Classe 'DatabaseConfig' en charge de
+ * Classe 'DatabaseConfig'
  *
  * @author jnsualu2026
  * @version 1.0

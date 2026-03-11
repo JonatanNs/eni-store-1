@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * Classe 'UserSQLRepository' en charge de
+ * Classe 'UserSQLRepository'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -16,4 +16,5 @@ import java.util.Optional;
 @Profile("sql")
 public interface PersonSQLRepository extends JpaRepository<Person, String> {
     Optional<Person> findByEmail(String email);
+
 }

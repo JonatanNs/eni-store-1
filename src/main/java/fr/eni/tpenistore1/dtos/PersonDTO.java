@@ -1,7 +1,7 @@
 package fr.eni.tpenistore1.dtos;
 
 /**
- * Classe 'PersonDTO' en charge de
+ * Classe 'PersonDTO'
  *
  * @author jnsualu2026
  * @version 1.0

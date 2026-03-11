@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0
  * @since 25/02/2026 13:56
  */
-public class GenericController<E, ID, S extends I_GenericService<E, ID>>{
-    
+public class GenericController<E, ID, S extends IGenericService<E, ID>> {
+
     protected final S service;
 
     public GenericController(S service) {
@@ -51,4 +51,6 @@ public class GenericController<E, ID, S extends I_GenericService<E, ID>>{
                 throw new NotFoundException("Impossible de récupérer l'élément.");
             }
     }
+
+
 }

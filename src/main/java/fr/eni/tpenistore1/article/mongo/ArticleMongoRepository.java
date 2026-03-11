@@ -6,16 +6,17 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-
 /**
- * Classe 'ArticleMongoRepository' en charge de
+ * Classe 'ArticleMongoService'
  *
  * @author jnsualu2026
  * @version 1.0
- * @since 26/02/2026 15:54
+ * @since 26/02/2026 15:53
  */
 
 @Profile("mongo")
 public interface ArticleMongoRepository extends MongoRepository<Article, String> {
     Optional<Article> findByTitle(String title);
+
 }
+
