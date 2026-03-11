@@ -5,7 +5,7 @@ import fr.eni.tpenistore1.exceptions.AlreadyExistsException;
 import fr.eni.tpenistore1.exceptions.InvalidException;
 import fr.eni.tpenistore1.record.ApiResponse;
 import fr.eni.tpenistore1.security.Jwt.JwtUtils;
-import fr.eni.tpenistore1.person.IPersonService;
+import fr.eni.tpenistore1.person.IPersonDAO;
 import fr.eni.tpenistore1.person.Person;
 import fr.eni.tpenistore1.person.PersonMapper;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final IPersonService service;
+    private final IPersonDAO service;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
@@ -46,7 +46,7 @@ public class AuthController {
 
     private static final Pattern PASSWORD_REGEX = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\\w\\s]).{12,}$");
 
-    public AuthController(IPersonService service, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthenticationManager authenticationManager, PersonMapper personMapper) {
+    public AuthController(IPersonDAO service, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthenticationManager authenticationManager, PersonMapper personMapper) {
         this.service = service;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
@@ -57,7 +57,7 @@ public class AuthController {
     @PostMapping("/inscription")
     public ResponseEntity<ApiResponse<PersonDTO>> showRegister(@Valid @RequestBody Person person) {
 
-        if (service.findByEmail(person.getEmail()).data().isPresent()) {
+        if (service.findByEmail(person.getEmail()).isPresent()) {
             throw new AlreadyExistsException("Email : " + person.getEmail() + " existe déja connecté vous !");
         }
         if (!PASSWORD_REGEX.matcher(person.getPassword()).matches()) {

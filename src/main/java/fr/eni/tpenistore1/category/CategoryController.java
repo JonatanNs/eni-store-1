@@ -1,11 +1,12 @@
 package fr.eni.tpenistore1.category;
 
-import fr.eni.tpenistore1.generics.GenericController;
+import fr.eni.tpenistore1.exceptions.NotFoundException;
 import fr.eni.tpenistore1.record.ApiResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -18,18 +19,31 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("api/v1/categories")
-public class CategoryController extends GenericController<Category, String, ICategoryService> {
+public class CategoryController {
 
-    private final ICategoryService categoryService;
+    private final CategoryService service;
 
-    public CategoryController(ICategoryService categoryService) {
-        super(categoryService);
-        this.categoryService = categoryService;
+    public CategoryController(CategoryService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<Page<Category>>> getAll(Pageable pageable) throws RuntimeException {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.getAll(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getId(@PathVariable String id) throws RuntimeException{
+        if(service.getById(id).data().isPresent()){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.getById(id));
+        } else{
+            throw new NotFoundException("Impossible de récupérer l'élément.");
+        }
     }
 
     @GetMapping("/search")
     public ApiResponse<Optional<Category>> findByLabel(@RequestParam String label) {
-        return categoryService.findByLabel(label);
+        return service.findByLabel(label);
     }
 
 }

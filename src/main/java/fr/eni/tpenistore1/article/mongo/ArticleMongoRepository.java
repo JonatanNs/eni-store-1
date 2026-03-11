@@ -17,6 +17,5 @@ import java.util.Optional;
 @Profile("mongo")
 public interface ArticleMongoRepository extends MongoRepository<Article, String> {
     Optional<Article> findByTitle(String title);
-
 }
 

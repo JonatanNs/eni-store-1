@@ -18,5 +18,4 @@ import java.util.Optional;
 @Profile("sql")
 public interface ArticleSQLRepository extends JpaRepository<Article, String> {
     Optional<Article> findByTitle(String title);
-
 }

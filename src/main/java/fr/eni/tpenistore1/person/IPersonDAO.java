@@ -1,7 +1,8 @@
 package fr.eni.tpenistore1.person;
 
-import fr.eni.tpenistore1.generics.IGenericService;
-import fr.eni.tpenistore1.record.ApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 
@@ -19,7 +20,11 @@ import java.util.Optional;
  * @version 1.0
  * @since 03/03/2026
  */
-public interface IPersonService extends IGenericService<Person, String> {
-    ApiResponse<Optional<Person>> findByEmail(String email);
-    ApiResponse<?> save(Person user);
+public interface IPersonDAO {
+    Page<Person> getAll(Pageable pageable);
+    Optional<Person> getById(String id);
+    void deleteById(String id);
+    void update(String id, Person entity);
+    void save(Person user);
+    Optional<Person> findByEmail(String email);
 }
