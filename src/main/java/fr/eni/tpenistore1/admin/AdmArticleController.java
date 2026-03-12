@@ -33,7 +33,6 @@ public class AdmArticleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(entity));
     }
 
-
     @DeleteMapping("supprimer/{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id) throws RuntimeException {
         if (service.getById(id).data().isPresent()) {

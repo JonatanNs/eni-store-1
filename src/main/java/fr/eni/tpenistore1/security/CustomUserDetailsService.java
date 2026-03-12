@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
+
     private final IPersonDAO service;
 
     public CustomUserDetailsService(IPersonDAO service) {

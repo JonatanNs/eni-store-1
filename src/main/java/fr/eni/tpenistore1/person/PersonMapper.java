@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * Classe 'UserMongoMapper'
+ * Classe 'PersonMapper'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -14,6 +14,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface PersonMapper {
 
-    @Mapping(source = "roles", target = "roleUser")
-    PersonDTO userToUserDTO(Person user);
+    @Mapping(source ="roles", target = "role")
+    PersonDTO personToPersonDTO(Person person);
 }

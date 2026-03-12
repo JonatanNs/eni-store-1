@@ -1,10 +1,7 @@
 package fr.eni.tpenistore1.person;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import fr.eni.tpenistore1.generics.IDAOGeneric;
 import java.util.Optional;
-
 
 /**
  * Interface IUserService en charge de la gestion des utilisateurs.
@@ -20,11 +17,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 03/03/2026
  */
-public interface IPersonDAO {
-    Page<Person> getAll(Pageable pageable);
-    Optional<Person> getById(String id);
-    void deleteById(String id);
+public interface IPersonDAO extends IDAOGeneric<Person, String> {
     void update(String id, Person entity);
-    void save(Person user);
     Optional<Person> findByEmail(String email);
 }

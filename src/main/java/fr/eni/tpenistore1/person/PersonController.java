@@ -49,6 +49,6 @@ public class PersonController {
     public ApiResponse<PersonDTO> getByEmail(@RequestParam String email) {
         Optional<Person> person = service.findByEmail(email).data();
         return new ApiResponse<>("200", LocalDateTime.now(), "Personne trouvée",
-                person.map(personMapper::userToUserDTO).orElse(null));
+                person.map(personMapper::personToPersonDTO).orElse(null));
     }
 }

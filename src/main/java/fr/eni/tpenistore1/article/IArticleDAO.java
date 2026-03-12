@@ -1,8 +1,6 @@
 package fr.eni.tpenistore1.article;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import fr.eni.tpenistore1.generics.IDAOGeneric;
 import java.util.Optional;
 
 /**
@@ -12,11 +10,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 11/03/2026 13:52
  */
-public interface IArticleDAO {
-    Page<Article> getAll(Pageable pageable);
-    Optional<Article> getById(String id);
-    void deleteById(String id);
-    void save(Article entity);
-    void update(String id, Article entity);
+public interface IArticleDAO extends IDAOGeneric<Article, String> {
+    void update(String id, Article article);
     Optional<Article> findByTitle(String title);
 }

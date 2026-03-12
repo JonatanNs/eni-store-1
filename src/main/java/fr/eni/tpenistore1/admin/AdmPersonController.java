@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Classe 'AdmPersonController' en charge de
+ * Classe 'AdmPersonController'
  *
  * @author jnsualu2026
  * @version 1.0
@@ -29,7 +29,6 @@ public class AdmPersonController {
         service.save(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(person));
     }
-
 
     @DeleteMapping("supprimer/{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id) throws RuntimeException {

@@ -31,7 +31,6 @@ public class AdmCategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(category));
     }
 
-
     @DeleteMapping("supprimer/{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id) throws RuntimeException {
         if (service.getById(id).data().isPresent()) {

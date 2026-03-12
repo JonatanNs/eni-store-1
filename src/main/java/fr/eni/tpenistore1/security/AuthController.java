@@ -15,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,21 +71,21 @@ public class AuthController {
                 "201",
                 LocalDateTime.now(),
                 "Inscription réussie",
-                personMapper.userToUserDTO(person)));
+                personMapper.personToPersonDTO(person)));
     }
 
     @PostMapping("/connexion")
-    public ResponseEntity<?> showLogin(@RequestBody Person user) {
+    public ResponseEntity<?> showLogin(@RequestBody Person person) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+                    new UsernamePasswordAuthenticationToken(person.getEmail(), person.getPassword())
             );
             if (authentication.isAuthenticated()) {
-                UserDetails principal = (UserDetails) authentication.getPrincipal();
+                Person principal = (Person) authentication.getPrincipal();
 
                 Map<String, Object> authData = new HashMap<>();
                 authData.put("token", jwtUtils.generateToken(principal));
-                authData.put("user", personMapper.userToUserDTO(user));
+                authData.put("user", personMapper.personToPersonDTO(principal));
 
                 return ResponseEntity.ok(new ApiResponse<>(
                         "200",

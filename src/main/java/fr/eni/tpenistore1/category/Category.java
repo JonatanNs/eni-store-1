@@ -1,7 +1,7 @@
 package fr.eni.tpenistore1.category;
 
 import fr.eni.tpenistore1.article.Article;
-import fr.eni.tpenistore1.person.core.BaseEntity;
+import fr.eni.tpenistore1.core.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -26,15 +26,11 @@ public class Category extends BaseEntity {
     @NotBlank(message = "Le label ne peux pas être null.")
     private String label;
 
-    @OneToMany(mappedBy = "category")
-    private List<Article> articles;
-
     public Category() {
     }
 
-    public Category(String label) {
-        this.label = label;
-    }
+    @OneToMany(mappedBy = "category")
+    private List<Article> articles;
 
     public String getLabel() {
         return label;
@@ -42,5 +38,13 @@ public class Category extends BaseEntity {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public List<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
     }
 }

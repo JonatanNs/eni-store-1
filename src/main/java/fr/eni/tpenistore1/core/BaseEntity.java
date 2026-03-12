@@ -1,4 +1,4 @@
-package fr.eni.tpenistore1.person.core;
+package fr.eni.tpenistore1.core;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -47,10 +47,6 @@ public class BaseEntity {
 
     public int getVersion() {
         return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 
     public LocalDateTime getCreatedAt() {

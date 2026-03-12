@@ -1,7 +1,7 @@
 package fr.eni.tpenistore1.article;
 
 import fr.eni.tpenistore1.category.Category;
-import fr.eni.tpenistore1.person.core.BaseEntity;
+import fr.eni.tpenistore1.core.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -32,11 +32,11 @@ public class Article extends BaseEntity {
     private Category category;
 
     public Article() {
-
     }
 
-    public Article(String title) {
+    public Article(String title, Category category) {
         this.title = title;
+        this.category = category;
     }
 
     public String getTitle() {
