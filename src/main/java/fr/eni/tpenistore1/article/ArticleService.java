@@ -1,7 +1,9 @@
 package fr.eni.tpenistore1.article;
 
+import fr.eni.tpenistore1.exceptions.NotFoundException;
 import fr.eni.tpenistore1.generics.ServiceGeneric;
 import fr.eni.tpenistore1.record.ApiResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -22,12 +24,18 @@ public class ArticleService extends ServiceGeneric<Article, String, IArticleDAO>
         this.dao = dao;
     }
 
-    public ApiResponse<?> update(String id, Article article) {
-        dao.update(id, article);
-        return buildResponse("Element enregistré", article);
+    public ResponseEntity<ApiResponse<Article>> update(String id, Article article) {
+        if(dao.getById(id).isPresent()){
+            dao.update(id, article);
+            return buildResponse("Element enregistré", article);
+        }
+        throw new NotFoundException("Element non trouvé");
     }
 
-    public ApiResponse<Optional<Article>> findByTitle(String title) {
-        return buildResponse("Element trouvé avec succès.", dao.findByTitle(title));
+    public ResponseEntity<ApiResponse<Optional<Article>>> findByTitle(String title) {
+        if(dao.findByTitle(title).isPresent()){
+            return buildResponse("Element trouvé avec succès.", dao.findByTitle(title));
+        }
+        throw new NotFoundException("Element non trouvé");
     }
 }

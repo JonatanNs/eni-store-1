@@ -1,11 +1,12 @@
 package fr.eni.tpenistore1.generics;
 
+import fr.eni.tpenistore1.exceptions.NotFoundException;
 import fr.eni.tpenistore1.record.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.http.ResponseEntity;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * Classe 'ServiceGeneric' en charge de
@@ -22,25 +23,31 @@ public class ServiceGeneric<E, ID, S extends IDAOGeneric<E, ID>>   {
         this.dao = dao;
     }
 
-    public <T> ApiResponse<T> buildResponse(String message, T data){
-        return new ApiResponse<>("200", LocalDateTime.now(), message, data);
+    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
+        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
     }
 
-    public ApiResponse<Page<E>> getAll(Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<E>>> getAll(Pageable pageable) {
         return buildResponse("Liste récupérée avec succès", dao.getAll(pageable));
     }
 
-    public ApiResponse<Optional<E>> getById(ID id) {
-        return buildResponse("Element récupéré", dao.getById(id));
+    public ResponseEntity<ApiResponse<E>> getById(ID id) {
+        if(dao.getById(id).isPresent()){
+            return buildResponse("Element récupéré", dao.getById(id).get());
+        }
+        throw new NotFoundException("Element non trouvé");
     }
 
-    public ApiResponse<E> save(E entity) {
+    public ResponseEntity<ApiResponse<E>> save(@Valid E entity) {
         dao.save(entity);
         return buildResponse("Element enregistré", entity);
     }
 
-    public ApiResponse<?> deleteById(ID id) {
-        dao.deleteById(id);
-        return buildResponse("Element supprimé",null);
+    public ResponseEntity<ApiResponse<E>> deleteById(ID id) {
+        if(dao.getById(id).isPresent()){
+            dao.deleteById(id);
+            return buildResponse("Element supprimé",null);
+        }
+        throw new NotFoundException("Element non trouvé");
     }
 }

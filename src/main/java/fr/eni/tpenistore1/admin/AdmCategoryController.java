@@ -2,9 +2,8 @@ package fr.eni.tpenistore1.admin;
 
 import fr.eni.tpenistore1.category.Category;
 import fr.eni.tpenistore1.category.CategoryService;
-import fr.eni.tpenistore1.exceptions.NotFoundException;
+import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,28 +25,17 @@ public class AdmCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody Category category) {
-        service.save(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(category));
+    public ResponseEntity<ApiResponse<Category>> create(@Valid @RequestBody Category category) {
+        return service.save(category);
     }
 
     @DeleteMapping("supprimer/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable String id) throws RuntimeException {
-        if (service.getById(id).data().isPresent()) {
-            service.deleteById(id);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteById(id));
-        } else {
-            throw new NotFoundException("Elément introuvable");
-        }
+    public ResponseEntity<ApiResponse<Category>> deleteById(@PathVariable String id) {
+            return service.deleteById(id);
     }
 
     @PatchMapping("modifier/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody Category category) {
-
-        if (service.getById(id).data().isEmpty()) {
-            throw new NotFoundException("Elément introuvable");
-        }
-        service.update(id, category);
-        return ResponseEntity.status(HttpStatus.OK).body(service.update(id, category));
+    public ResponseEntity<ApiResponse<Category>> update(@PathVariable String id, @Valid @RequestBody Category category) {
+        return service.update(id, category);
     }
 }

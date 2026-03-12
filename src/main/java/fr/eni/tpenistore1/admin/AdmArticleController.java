@@ -2,13 +2,10 @@ package fr.eni.tpenistore1.admin;
 
 import fr.eni.tpenistore1.article.Article;
 import fr.eni.tpenistore1.article.ArticleService;
-import fr.eni.tpenistore1.exceptions.NotFoundException;
+import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 /**
  * Classe 'AdmArticleController'
@@ -28,30 +25,18 @@ public class AdmArticleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody Article entity) {
+    public ResponseEntity<ApiResponse<Article>> create(@Valid @RequestBody Article entity) {
         service.save(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(entity));
+        return service.save(entity);
     }
 
     @DeleteMapping("supprimer/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable String id) throws RuntimeException {
-        if (service.getById(id).data().isPresent()) {
-            service.deleteById(id);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteById(id));
-        } else {
-            throw new NotFoundException("Elément introuvable");
-        }
+    public ResponseEntity<ApiResponse<Article>> deleteById(@PathVariable String id)  {
+        return service.deleteById(id);
     }
 
     @PatchMapping("modifier/{id}")
     public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody Article entity) {
-
-        Optional<Article> existing = service.getById(id).data();
-
-        if (existing.isEmpty()) {
-            throw new NotFoundException("Elément introuvable");
-        }
-        service.update(id, entity);
-        return ResponseEntity.status(HttpStatus.OK).body(service.update(id, entity));
+        return service.update(id, entity);
     }
 }

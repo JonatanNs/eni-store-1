@@ -1,10 +1,10 @@
 package fr.eni.tpenistore1.admin;
 
-import fr.eni.tpenistore1.exceptions.NotFoundException;
+import fr.eni.tpenistore1.dtos.PersonDTO;
 import fr.eni.tpenistore1.person.Person;
 import fr.eni.tpenistore1.person.PersonService;
+import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,28 +25,17 @@ public class AdmPersonController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody Person person) {
-        service.save(person);
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(person));
+    public ResponseEntity<ApiResponse<PersonDTO>> create(@Valid @RequestBody Person person) {
+        return service.save(person);
     }
 
     @DeleteMapping("supprimer/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable String id) throws RuntimeException {
-        if (service.getById(id).data().isPresent()) {
-            service.deleteById(id);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.deleteById(id));
-        } else {
-            throw new NotFoundException("Elément introuvable");
-        }
+    public ResponseEntity<ApiResponse<Person>> deleteById(@PathVariable String id) {
+        return service.deleteById(id);
     }
 
     @PatchMapping("modifier/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody Person person) {
-
-        if (service.getById(id).data().isEmpty()) {
-            throw new NotFoundException("Elément introuvable");
-        }
-        service.update(id, person);
-        return ResponseEntity.status(HttpStatus.OK).body(service.update(id, person));
+    public ResponseEntity<ApiResponse<PersonDTO>> update(@PathVariable String id, @Valid @RequestBody Person person) {
+        return service.update(id, person);
     }
 }
