@@ -4,29 +4,34 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 /**
- * Classe 'JwtRequestFilter'
+ * Classe 'JwtAuthFilter'
  *
  * @author jnsualu2026
  * @version 1.0
  * @since 02/03/2026 13:57
  */
-public class JwtRequestFilter extends OncePerRequestFilter {
+@Component
+public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtUtils jwtTokenUtil;
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
+    private final JwtService jwtTokenUtil;
     private final UserDetailsService userDetailService;
 
-    public JwtRequestFilter(JwtUtils jwtTokenUtil, UserDetailsService userDetailService) {
+    public JwtAuthFilter(JwtService jwtTokenUtil, UserDetailsService userDetailService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailService = userDetailService;
     }
@@ -50,7 +55,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                     UserDetails userDetails = userDetailService.loadUserByUsername(email);
 
-                    if (jwtTokenUtil.valideToken(jwtToken, userDetails)) {
+                    if (jwtTokenUtil.isTokenValid(jwtToken, userDetails)) {
 
                         UsernamePasswordAuthenticationToken authToken =
                                 new UsernamePasswordAuthenticationToken(
@@ -69,6 +74,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         } catch (Exception ex) {
             SecurityContextHolder.clearContext();
+            logger.error("Erreur lors de la validation du token JWT : { {} }", ex.getMessage());
         }
         filterChain.doFilter(request, response);
     }

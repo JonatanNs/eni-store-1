@@ -1,9 +1,7 @@
 package fr.eni.tpenistore1.security.Jwt;
 
-import fr.eni.tpenistore1.record.ApiResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,27 +10,26 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Classe 'JwtUtils' en charge de
+ * Classe 'JwtService'
  *
  * @author jnsualu2026
  * @version 1.0
  * @since 27/02/2026 16:01
  */
 @Component
-public class JwtUtils {
+public class JwtService {
 
-    private final String SECRET_KEY;
-    private final String EXPIRATION_KEY;
+    private final String secretKey;
+    private final long expirationMs;
 
-    public JwtUtils(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") String expirationKey) {
-        SECRET_KEY = secretKey;
-        EXPIRATION_KEY = expirationKey;
+    public JwtService(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") long expirationMs) {
+        this.secretKey = secretKey;
+        this.expirationMs = expirationMs;
     }
 
     public String generateToken(UserDetails userDetail) {
@@ -47,17 +44,17 @@ public class JwtUtils {
                 .subject(String.valueOf(userDetail.getUsername()))
                 .claim("scp", authorities) // role
                 .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plusMillis(Long.parseLong(EXPIRATION_KEY)))) // EXPIRATION_KEY en ms
+                .expiration(Date.from(now.plusMillis(expirationMs))) // EXPIRATION_KEY en ms
                 .signWith(getSecretKey())
                 .compact();
     }
 
-    public Key getSecretKey(){
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    private Key getSecretKey(){
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     // Vérifie si un token est valide pour un utilisateur donné
-    public boolean valideToken(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         return extractUsername(token).equals((userDetails).getUsername()) && !isTokenExpired(token);
     }
 
@@ -88,43 +85,5 @@ public class JwtUtils {
     // Extrait la date d'expiration depuis le token
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
-    }
-
-    /**
-     *
-     * Méthode en charge de vérifier si le token est valide
-     * @param http
-     * @return
-     */
-    public ApiResponse<?> checkToken(HttpServletRequest http) {
-
-        String authorization = http.getHeader("Authorization");
-
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            return new ApiResponse<>( "701" , LocalDateTime.now(), "Header Authorization manquant ou invalide", null);
-        }
-
-        String token = authorization.substring(7);
-
-        try {
-            JwtParser jwtParser = Jwts.parser()
-                    .verifyWith((SecretKey) getSecretKey())
-                    .build();
-
-            Claims claims = jwtParser
-                    .parseSignedClaims(token)
-                    .getPayload();
-
-            Date expirationDate = claims.getExpiration();
-
-        } catch (ExpiredJwtException e) {
-            return new ApiResponse<>( "701" , LocalDateTime.now(), "Token expiré", null);
-        } catch (MalformedJwtException e) {
-            return new ApiResponse<>( "701" , LocalDateTime.now(), "Token malformé", null);
-        } catch (Exception e) {
-            return new ApiResponse<>( "701" , LocalDateTime.now(), "Erreur inconnue", null);
-        }
-
-        return new ApiResponse<>( "701" , LocalDateTime.now(), "Token valide", token);
     }
 }

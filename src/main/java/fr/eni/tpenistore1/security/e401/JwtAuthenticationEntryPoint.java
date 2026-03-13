@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Classe 'JwtAuthenticationEntryPoint' gère le cas où l’utilisateur n’est pas authentifié et essaie d’accéder à une ressource protégée.
@@ -36,7 +37,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         ApiResponse<?> error = new ApiResponse<>(
                 "401",
-                LocalDateTime.now(),
+                LocalDateTime.now(ZoneOffset.UTC),
                 "Authentification requise ou JWT invalide",
                 null
         );

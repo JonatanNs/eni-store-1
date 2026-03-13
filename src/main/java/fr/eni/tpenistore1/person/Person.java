@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Entity(name = "persons")
 @Document("persons")
-public class Person extends BaseEntity implements UserDetails {
+public class Person extends BaseEntity {
     @Column(nullable = false)
     @NotBlank(message = "Le prénom ne peux pas être vide.")
     private String firstName;
@@ -62,16 +62,6 @@ public class Person extends BaseEntity implements UserDetails {
         return getFirstName() + " " + getLastName();
     }
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(roles.name()));
-    }
-    @JsonIgnore
-    @Override
-    public String getUsername() {
-        return getEmail();
-    }
 
     public String getFirstName() {
         return firstName;
@@ -97,7 +87,6 @@ public class Person extends BaseEntity implements UserDetails {
         this.email = email;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }

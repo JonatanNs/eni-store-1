@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Classe 'JwtAccessDeniedHandler' en charge de gérer l'erreur 403 (utilisateur n'est pas autorisé à accéder au contenu).
@@ -26,7 +29,8 @@ import java.time.LocalDateTime;
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
-    // Parse en JSON
+    private static final Logger logger = LoggerFactory.getLogger(JwtAccessDeniedHandler.class);
+
     private final ObjectMapper mapper;
 
     public JwtAccessDeniedHandler(ObjectMapper mapper) {
@@ -38,39 +42,28 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
                        HttpServletResponse response,
                        AccessDeniedException ex) throws IOException {
 
-        // Récupère l'objet Authentication du contexte de sécurité courant.
-        // Cet objet représente l'utilisateur actuellement authentifié (si connecté),
-        // ses rôles/autorités, et d'autres informations liées à la session de sécurité.
-        // Si aucun utilisateur n'est authentifié, auth sera null.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         String message;
-        String code;
 
         if (auth != null) {
-            // On récupère le nom de l'utilisateur connecté
-            String username;
             Object principal = auth.getPrincipal();
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
-            code = "403";
-            message = username + " a tenté d'accéder à l'URL protégée: " + request.getRequestURI();
+            String username = principal instanceof UserDetails userDetails
+                    ? userDetails.getUsername()
+                    : principal.toString();
+
+            logger.warn("Accès refusé - utilisateur : {} - URL : {}", username, request.getRequestURI());
+            message = "Vous n'avez pas les droits pour accéder à cette ressource";
         } else {
-            code = "701";
             message = "Accès refusé";
         }
 
         ApiResponse<?> error = new ApiResponse<>(
-                code,
-                LocalDateTime.now(),
+                "403",
+                LocalDateTime.now(ZoneOffset.UTC),
                 message,
                 null
         );
 
-        // Parse en JSON
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         mapper.writeValue(response.getOutputStream(), error);

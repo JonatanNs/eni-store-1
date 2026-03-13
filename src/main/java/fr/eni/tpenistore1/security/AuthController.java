@@ -4,7 +4,7 @@ import fr.eni.tpenistore1.dtos.PersonDTO;
 import fr.eni.tpenistore1.exceptions.AlreadyExistsException;
 import fr.eni.tpenistore1.exceptions.InvalidException;
 import fr.eni.tpenistore1.record.ApiResponse;
-import fr.eni.tpenistore1.security.Jwt.JwtUtils;
+import fr.eni.tpenistore1.security.Jwt.JwtService;
 import fr.eni.tpenistore1.person.IPersonDAO;
 import fr.eni.tpenistore1.person.Person;
 import fr.eni.tpenistore1.person.PersonMapper;
@@ -39,13 +39,13 @@ public class AuthController {
 
     private final IPersonDAO service;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
+    private final JwtService jwtUtils;
     private final AuthenticationManager authenticationManager;
     private final PersonMapper personMapper;
 
     private static final Pattern PASSWORD_REGEX = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\\w\\s]).{12,}$");
 
-    public AuthController(IPersonDAO service, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthenticationManager authenticationManager, PersonMapper personMapper) {
+    public AuthController(IPersonDAO service, PasswordEncoder passwordEncoder, JwtService jwtUtils, AuthenticationManager authenticationManager, PersonMapper personMapper) {
         this.service = service;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
@@ -81,11 +81,11 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(person.getEmail(), person.getPassword())
             );
             if (authentication.isAuthenticated()) {
-                Person principal = (Person) authentication.getPrincipal();
+                UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
 
                 Map<String, Object> authData = new HashMap<>();
                 authData.put("token", jwtUtils.generateToken(principal));
-                authData.put("user", personMapper.personToPersonDTO(principal));
+                authData.put("user", personMapper.personToPersonDTO(principal.person()));
 
                 return ResponseEntity.ok(new ApiResponse<>(
                         "200",

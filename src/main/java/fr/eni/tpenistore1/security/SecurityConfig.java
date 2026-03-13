@@ -1,7 +1,7 @@
 package fr.eni.tpenistore1.security;
 
-import fr.eni.tpenistore1.security.Jwt.JwtRequestFilter;
-import fr.eni.tpenistore1.security.Jwt.JwtUtils;
+import fr.eni.tpenistore1.security.Jwt.JwtAuthFilter;
+import fr.eni.tpenistore1.security.Jwt.JwtService;
 import fr.eni.tpenistore1.security.e401.JwtAuthenticationEntryPoint;
 import fr.eni.tpenistore1.security.e403.JwtAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
@@ -28,12 +28,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAccessDeniedHandler accessDeniedHandler;
-    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAccessDeniedHandler accessDeniedHandler; // 403
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint; // 401
     private final CustomUserDetailsService userDetailsService;
-    private final JwtUtils jwtUtils;
+    private final JwtService jwtUtils;
 
-    public SecurityConfig(JwtAccessDeniedHandler accessDeniedHandler, JwtAuthenticationEntryPoint authenticationEntryPoint, CustomUserDetailsService userDetailsService, JwtUtils jwtUtils) {
+    public SecurityConfig(JwtAccessDeniedHandler accessDeniedHandler, JwtAuthenticationEntryPoint authenticationEntryPoint, CustomUserDetailsService userDetailsService, JwtService jwtUtils) {
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.userDetailsService = userDetailsService;
@@ -51,8 +51,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtRequestFilter jwtRequestFilter() {
-        return new JwtRequestFilter(jwtUtils, userDetailsService);
+    public JwtAuthFilter jwtRequestFilter() {
+        return new JwtAuthFilter(jwtUtils, userDetailsService);
     }
 
     @Bean
@@ -63,10 +63,11 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/admin/**").hasAnyAuthority("ADMIN", "ADMIN_SUPER")
+                        .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN", "ADMIN_SUPER")
                         .anyRequest().permitAll())
                 // accessDeniedHandler → quand un utilisateur connecté tente d’accéder à une ressource pour laquelle il n’a pas le droit.
-                .exceptionHandling(e -> e.accessDeniedHandler(accessDeniedHandler)
+                .exceptionHandling(e -> e
+                        .accessDeniedHandler(accessDeniedHandler)
                         // authenticationEntryPoint → quand un utilisateur non connecté tente d’accéder à une ressource sécurisée.
                         .authenticationEntryPoint(authenticationEntryPoint))
                 // Configure la gestion de session.
