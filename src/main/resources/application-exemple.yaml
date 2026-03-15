@@ -3,7 +3,7 @@ spring:
     name: YOUR-NAME
 
   profiles:
-    active: mongo
+    active: YOUR-PROFIL
 
   datasource:
     url: jdbc:mysql://localhost:3306/YOUR-NAME
@@ -21,3 +21,5 @@ spring:
 jwt:
   secret: YOUR-KEY
   expiration: YOUR-EXPIRATION
+
+baseUrl: YOUR-BASE
