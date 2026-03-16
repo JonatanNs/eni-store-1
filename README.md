@@ -1,177 +1,59 @@
-# ENI Store
+# TpEniStore1
 
-ENI Store est une application web composée d'un **backend Spring Boot** et d'un **frontend Angular**.
-Le projet simule une plateforme de gestion de boutique avec des **articles**, **catégories** et **utilisateurs**.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
 
-L'objectif du projet est de mettre en pratique une architecture backend moderne avec **Spring Boot**, une API REST sécurisée avec **JWT**, et une structure claire orientée **domain-driven packages**.
+## Development server
 
----
+To start a local development server, run:
 
-# Technologies utilisées
-
-## Backend
-
-* Java 17+
-* Spring Boot
-* Spring Security
-* JWT Authentication
-* Spring Data JPA
-* Spring Data MongoDB
-* MapStruct
-* Bean Validation
-* Swagger / OpenAPI
-* Gradle
-* YAML configuration
-
-## Frontend
-
-* Angular
-
-## Base de données
-
-Le projet supporte deux bases de données :
-
-* **MySQL** (SQL)
-* **MongoDB** (NoSQL)
-
----
-
-# Fonctionnalités principales
-
-Actuellement l'application permet :
-
-* Gestion des **articles**
-* Gestion des **catégories**
-* Gestion des **utilisateurs**
-* Authentification avec **JWT**
-* Sécurisation des endpoints avec **Spring Security**
-* Documentation de l'API avec **Swagger**
-* Validation des données avec **Bean Validation**
-
----
-
-# Architecture du projet
-
-Le projet suit une structure **par domaine (feature-based packaging)** plutôt qu'une structure technique.
-
-Exemple :
-
-```
-article/
-    ArticleController
-    ArticleService
-    ArticleRepository
-    ArticleDAO
-    ArticleDTO
-
-category/
-    CategoryController
-    CategoryService
-    CategoryRepository
-
-person/
-    PersonController
-    PersonService
-    PersonRepository
-    PersonDTO
-```
-
-Cette organisation permet de regrouper tout ce qui concerne une entité dans un même package.
-
----
-
-# Sécurité
-
-L'authentification est basée sur **Spring Security + JWT**.
-
-Flux d'authentification :
-
-1. L'utilisateur envoie ses identifiants
-2. Le serveur valide l'utilisateur
-3. Un **token JWT** est généré
-4. Le token doit être envoyé dans les requêtes suivantes
-
-Header utilisé :
-
-```
-Authorization: Bearer TOKEN
-```
-
----
-
-# Documentation API
-
-La documentation de l'API est disponible via **Swagger**.
-
-URL typique :
-
-```
-http://localhost:8080/swagger-ui.html
-```
-
-ou
-
-```
-http://localhost:8080/swagger-ui/index.html
-```
-
----
-
-# Configuration
-
-La configuration de l'application est faite via **YAML**.
-
-Fichier principal :
-
-```
-application.yml
-```
-
-Il permet notamment de configurer :
-
-* la base de données
-* la sécurité
-* les profils Spring
-
----
-
-# Lancer le projet
-
-## Backend
-
-```
-./gradlew bootRun
-```
-
-ou
-
-```
-gradlew bootRun
-```
-
----
-
-## Frontend
-
-```
-npm install
+```bash
 ng serve
 ```
 
----
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-# Objectifs pédagogiques
+## Code scaffolding
 
-Ce projet a pour objectif de pratiquer :
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-* la création d'une **API REST avec Spring Boot**
-* l'authentification **JWT**
-* l'utilisation de **MongoDB et MySQL**
-* la mise en place d'une **architecture backend propre**
-* la communication avec un **frontend Angular**
+```bash
+ng generate component component-name
+```
 
----
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-# Auteur
+```bash
+ng generate --help
+```
 
-Projet réalisé dans le cadre d'un apprentissage autour de **Spring Boot / Angular**.
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
