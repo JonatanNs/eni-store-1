@@ -1,0 +1,5 @@
+<article class="grid grid-cols-3 gap-4">
+    @for (art of articlesList.data.content; track art.id) {
+      <app-article-card [article]="art" />
+    }
+</article>
