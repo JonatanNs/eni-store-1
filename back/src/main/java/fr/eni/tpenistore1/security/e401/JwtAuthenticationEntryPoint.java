@@ -2,17 +2,14 @@ package fr.eni.tpenistore1.security.e401;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.eni.tpenistore1.record.ApiResponse;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 /**
  * Classe 'JwtAuthenticationEntryPoint' gère le cas où l’utilisateur n’est pas authentifié et essaie d’accéder à une ressource protégée.
@@ -33,11 +30,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
+                         AuthenticationException authException) throws IOException {
 
-        ApiResponse<?> error = new ApiResponse<>(
-                "401",
-                LocalDateTime.now(ZoneOffset.UTC),
+        ApiResponse<?> error = ApiResponse.of(
+                HttpStatus.UNAUTHORIZED.value(),
                 "Authentification requise ou JWT invalide",
                 null
         );

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -16,8 +17,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 /**
  * Classe 'JwtAccessDeniedHandler' en charge de gérer l'erreur 403 (utilisateur n'est pas autorisé à accéder au contenu).
@@ -57,9 +56,8 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
             message = "Accès refusé";
         }
 
-        ApiResponse<?> error = new ApiResponse<>(
-                "403",
-                LocalDateTime.now(ZoneOffset.UTC),
+        ApiResponse<?> error = ApiResponse.of(
+                HttpStatus.FORBIDDEN.value(),
                 message,
                 null
         );

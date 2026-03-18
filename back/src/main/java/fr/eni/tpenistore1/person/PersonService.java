@@ -6,10 +6,10 @@ import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -29,8 +29,8 @@ public class PersonService {
         this.personMapper = personMapper;
     }
 
-    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
-        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data) {
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK.value(), message, data));
     }
 
     public ResponseEntity<ApiResponse<Page<PersonDTO>>> getAll(Pageable pageable) {
@@ -48,7 +48,7 @@ public class PersonService {
 
     public ResponseEntity<ApiResponse<PersonDTO>> save(@Valid Person person) {
         personDAO.save(person);
-        return buildResponse("Element enregistré", personMapper.personToPersonDTO(person));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.of(HttpStatus.CREATED.value(), "Element enregistré", personMapper.personToPersonDTO(person)));
     }
 
     public ResponseEntity<ApiResponse<Person>> deleteById(String id) {

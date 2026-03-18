@@ -1,6 +1,6 @@
 package fr.eni.tpenistore1.dtos;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * Classe 'PersonDTO' exposé côté API pour l'utilisateur.
@@ -15,8 +15,8 @@ public class PersonDTO {
     private String firstName;
     private String lastName;
     private String role;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     public String getEmail() {
         return email;
@@ -50,19 +50,19 @@ public class PersonDTO {
         this.role = role;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

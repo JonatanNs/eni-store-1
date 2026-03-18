@@ -5,8 +5,8 @@ import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import java.time.LocalDateTime;
 
 /**
  * Classe 'ServiceGeneric' en charge de
@@ -23,8 +23,8 @@ public class ServiceGeneric<E, ID, S extends IDAOGeneric<E, ID>>   {
         this.dao = dao;
     }
 
-    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
-        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data) {
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK.value(), message, data));
     }
 
     public ResponseEntity<ApiResponse<Page<E>>> getAll(Pageable pageable) {

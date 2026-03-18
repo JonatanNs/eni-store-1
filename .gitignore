@@ -42,3 +42,10 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Gradle
+build/
+.gradle/
+
+# JVM crash
+hs_err_pid*.log

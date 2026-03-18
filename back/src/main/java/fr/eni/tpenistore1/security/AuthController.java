@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -67,9 +65,8 @@ public class AuthController {
 
         service.save(person);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(
-                "201",
-                LocalDateTime.now(),
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.of(
+                HttpStatus.CREATED.value(),
                 "Inscription réussie",
                 personMapper.personToPersonDTO(person)));
     }
@@ -87,9 +84,8 @@ public class AuthController {
                 authData.put("token", jwtUtils.generateToken(principal));
                 authData.put("user", personMapper.personToPersonDTO(principal.person()));
 
-                return ResponseEntity.ok(new ApiResponse<>(
-                        "200",
-                        LocalDateTime.now(),
+                return ResponseEntity.ok(ApiResponse.of(
+                        HttpStatus.OK.value(),
                         "Connexion réussie",
                         authData)
                 );
