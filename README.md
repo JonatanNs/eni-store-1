@@ -1,6 +1,12 @@
 # EniStore
 
-EniStore est un projet de site e-commerce développé dans le cadre de la formation à l'ENI. L'accent est mis sur une **architecture back-end robuste**, complétée par une interface front-end Angular fonctionnelle.
+Projet réalisé dans le cadre de la formation ENI.
+Le cours de base consistait en un projet Java simple. J'ai choisi d'aller plus loin en intégrant des technologies supplémentaires pour me rapprocher d'un projet enterprise réel.
+
+### Ce que j'ai ajouté par rapport au cours : 
+
+- Spring Security — sécurisation de l'API avec authentification JWT 
+- MapStruct — mapping automatique entre entités et DTOs
 
 ## Stack technique
 
