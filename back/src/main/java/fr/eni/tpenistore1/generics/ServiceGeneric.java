@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Optional;
+
 /**
  * Classe 'ServiceGeneric' en charge de
  *
@@ -32,10 +34,10 @@ public class ServiceGeneric<E, ID, S extends IDAOGeneric<E, ID>>   {
     }
 
     public ResponseEntity<ApiResponse<E>> getById(ID id) {
-        if(dao.getById(id).isPresent()){
+        return dao.getById(id).map(e -> {
+            dao.getById(id);
             return buildResponse("Element récupéré", dao.getById(id).get());
-        }
-        throw new NotFoundException("Element non trouvé");
+        }).orElseThrow( () -> new NotFoundException("Element non trouvé"));
     }
 
     public ResponseEntity<ApiResponse<E>> save(@Valid E entity) {
@@ -43,11 +45,12 @@ public class ServiceGeneric<E, ID, S extends IDAOGeneric<E, ID>>   {
         return buildResponse("Element enregistré", entity);
     }
 
-    public ResponseEntity<ApiResponse<E>> deleteById(ID id) {
-        if(dao.getById(id).isPresent()){
-            dao.deleteById(id);
-            return buildResponse("Element supprimé",null);
-        }
-        throw new NotFoundException("Element non trouvé");
+    public ResponseEntity<ApiResponse<Void>> deleteById(ID id) {
+        return dao.getById(id)
+                .map(e -> {
+                    dao.deleteById(id);
+                    return buildResponse("Element supprimé", (Void) null);
+                })
+                .orElseThrow( () -> new NotFoundException("Element non trouvé"));
     }
 }

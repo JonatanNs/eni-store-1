@@ -25,17 +25,15 @@ public class ArticleService extends ServiceGeneric<Article, String, IArticleDAO>
     }
 
     public ResponseEntity<ApiResponse<Article>> update(String id, Article article) {
-        if(dao.getById(id).isPresent()){
+        return dao.getById(id).map(c -> {
             dao.update(id, article);
             return buildResponse("Element enregistré", article);
-        }
-        throw new NotFoundException("Element non trouvé");
+        }).orElseThrow( ()-> new NotFoundException("Element non trouvé") );
     }
 
     public ResponseEntity<ApiResponse<Optional<Article>>> findByTitle(String title) {
-        if(dao.findByTitle(title).isPresent()){
-            return buildResponse("Element trouvé avec succès.", dao.findByTitle(title));
-        }
-        throw new NotFoundException("Element non trouvé");
+        return dao.findByTitle(title)
+                .map(c -> buildResponse("Element trouvé avec succès.", dao.findByTitle(title)))
+                .orElseThrow( ()-> new NotFoundException("Element non trouvé") );
     }
 }

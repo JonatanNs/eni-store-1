@@ -24,18 +24,16 @@ public class CategoryService extends ServiceGeneric<Category, String, ICategoryD
     }
 
     public ResponseEntity<ApiResponse<Category>> update(String id, Category category) {
-        if(dao.getById(id).isPresent()){
+        return dao.getById(id).map(c -> {
             dao.update(id, category);
             return buildResponse("Element enregistré", category);
-        }
-        throw new NotFoundException("Element non trouvé");
+        }).orElseThrow( ()-> new NotFoundException("Element non trouvé") );
     }
 
     public ResponseEntity<ApiResponse<Optional<Category>>> findByLabel(String label) {
-        if(dao.findByLabel(label).isPresent()){
-            return buildResponse("Element trouvé avec succès.", dao.findByLabel(label));
-        }
-        throw new NotFoundException("Element non trouvé");
+        return dao.findByLabel(label)
+                .map(c -> buildResponse("Element trouvé avec succès.", dao.findByLabel(label)))
+                .orElseThrow( ()-> new NotFoundException("Element non trouvé") );
     }
 }
 

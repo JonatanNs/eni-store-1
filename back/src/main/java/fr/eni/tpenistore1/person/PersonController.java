@@ -36,7 +36,7 @@ public class PersonController {
     }
 
     @GetMapping("/email")
-    public ResponseEntity<ApiResponse<Optional<PersonDTO>>> getByEmail(@RequestParam String email) {
+    public ResponseEntity<ApiResponse<PersonDTO>> getByEmail(@RequestParam String email) {
         return service.findByEmail(email);
     }
 }
