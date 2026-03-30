@@ -1,0 +1,12 @@
+[
+  { "title": "Introduction à MongoDB" },
+  { "title": "Comprendre les bases NoSQL" },
+  { "title": "Créer une API avec Spring Boot" },
+  { "title": "Les bases de JWT" },
+  { "title": "Sécuriser une application web" },
+  { "title": "Découverte de Docker" },
+  { "title": "Architecture REST expliquée" },
+  { "title": "Introduction à Angular" },
+  { "title": "Comprendre les microservices" },
+  { "title": "Optimisation des requêtes MongoDB" }
+]

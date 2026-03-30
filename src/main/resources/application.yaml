@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: TpEniStore1
+
+  profiles:
+    active: mongo
+
+jwt:
+  secret: ${JwtSecret}
+  expiration: 86400000
