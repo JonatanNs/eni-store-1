@@ -46,6 +46,10 @@ public class BaseEntity {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public int getVersion() {
         return version;
     }

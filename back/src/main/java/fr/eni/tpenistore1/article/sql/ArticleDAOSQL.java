@@ -17,7 +17,7 @@ import java.util.Optional;
  * @since 10/03/2026 09:14
  */
 @Service
-@Profile("sql")
+@Profile("mysql")
 public class ArticleDAOSQL implements IArticleDAO {
 
     private final ArticleSQLRepository repository;

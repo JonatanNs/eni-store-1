@@ -17,7 +17,7 @@ import java.util.Optional;
  * @since 03/03/2026 09:22
  */
 @Service
-@Profile("sql")
+@Profile("mysql")
 public class CategorySQLDAO implements ICategoryDAO {
 
     private final CategorySQLRepository repository;

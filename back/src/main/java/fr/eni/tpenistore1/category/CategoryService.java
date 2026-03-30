@@ -2,10 +2,7 @@ package fr.eni.tpenistore1.category;
 
 import fr.eni.tpenistore1.exceptions.NotFoundException;
 import fr.eni.tpenistore1.generics.ServiceGeneric;
-import fr.eni.tpenistore1.record.ApiResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 /**
  * Classe 'CategoryService'
@@ -23,17 +20,14 @@ public class CategoryService extends ServiceGeneric<Category, String, ICategoryD
         this.dao = dao;
     }
 
-    public ResponseEntity<ApiResponse<Category>> update(String id, Category category) {
-        return dao.getById(id).map(c -> {
-            dao.update(id, category);
-            return buildResponse("Element enregistré", category);
-        }).orElseThrow( ()-> new NotFoundException("Element non trouvé") );
+    public Category update(String id, Category category) {
+        dao.getById(id).orElseThrow( ()-> new NotFoundException("Element non trouvé") );
+        dao.update(id, category);
+        return category;
     }
 
-    public ResponseEntity<ApiResponse<Optional<Category>>> findByLabel(String label) {
-        return dao.findByLabel(label)
-                .map(c -> buildResponse("Element trouvé avec succès.", dao.findByLabel(label)))
-                .orElseThrow( ()-> new NotFoundException("Element non trouvé") );
+    public Category findByLabel(String label) {
+        return dao.findByLabel(label).orElseThrow( ()-> new NotFoundException("Element non trouvé"));
     }
 }
 

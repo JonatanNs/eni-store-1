@@ -2,11 +2,13 @@ package fr.eni.tpenistore1.person;
 
 import fr.eni.tpenistore1.dtos.PersonDTO;
 import fr.eni.tpenistore1.record.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
+
+import java.time.LocalDateTime;
 
 /**
  * Classe 'PersonController'
@@ -25,18 +27,27 @@ public class PersonController {
         this.service = service;
     }
 
+    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
+        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<Page<PersonDTO>>> getAll(Pageable pageable) {
-        return service.getAll(pageable);
+        return buildResponse("Liste récupérée avec succès", service.getAll(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<PersonDTO>> getId(@PathVariable String id){
-        return service.getById(id);
+        return buildResponse("Element récupéré avec succès", service.getById(id));
+    }
+
+    @GetMapping("/modifier")
+    public ResponseEntity<ApiResponse<PersonDTO>> update(String id,@Valid Person person) {
+        return buildResponse("Element modifié avec succès", service.update(id, person));
     }
 
     @GetMapping("/email")
-    public ResponseEntity<ApiResponse<PersonDTO>> getByEmail(@RequestParam String email) {
-        return service.findByEmail(email);
+    public ResponseEntity<ApiResponse<PersonDTO>> getByEmail(@Valid @RequestParam String email) {
+        return buildResponse("Element récupéré avec succès",service.findByEmail(email));
     }
 }

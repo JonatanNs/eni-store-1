@@ -13,7 +13,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 03/03/2026 09:21
  */
-@Profile("sql")
+@Profile("mysql")
 public interface CategorySQLRepository extends JpaRepository<Category, String> {
     Optional<Category> findByLabel(String label);
 }

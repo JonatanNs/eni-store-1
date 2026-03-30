@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 /**
  * Classe 'AdmCategoryController'
  *
@@ -24,18 +26,25 @@ public class AdmCategoryController {
         this.service = service;
     }
 
+    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
+        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<Category>> create(@Valid @RequestBody Category category) {
-        return service.save(category);
+        service.save(category);
+        return buildResponse("Enregistrement éffectué avec succès", service.save(category));
     }
 
     @DeleteMapping("supprimer/{id}")
-    public ResponseEntity<ApiResponse<Category>> deleteById(@PathVariable String id) {
-            return service.deleteById(id);
+    public ResponseEntity<ApiResponse<Category>> deleteById(@PathVariable String id){
+        service.deleteById(id);
+        return buildResponse("Suppréssion éffectué avec succès", service.deleteById(id));
     }
 
     @PatchMapping("modifier/{id}")
     public ResponseEntity<ApiResponse<Category>> update(@PathVariable String id, @Valid @RequestBody Category category) {
-        return service.update(id, category);
+        service.update(id, category);
+        return buildResponse( "Modification éffectué avec succès", service.update(id, category));
     }
 }
