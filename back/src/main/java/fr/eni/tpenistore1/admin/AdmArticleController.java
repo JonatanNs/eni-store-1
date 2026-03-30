@@ -4,10 +4,9 @@ import fr.eni.tpenistore1.article.Article;
 import fr.eni.tpenistore1.article.ArticleService;
 import fr.eni.tpenistore1.record.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * Classe 'AdmArticleController'
@@ -27,7 +26,7 @@ public class AdmArticleController {
     }
 
     public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
-        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+        return ResponseEntity.ok( ApiResponse.of(HttpStatus.OK.value(), message, data));
     }
 
     @PostMapping

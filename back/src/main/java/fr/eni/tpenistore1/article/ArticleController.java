@@ -3,10 +3,9 @@ package fr.eni.tpenistore1.article;
 import fr.eni.tpenistore1.record.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /**
  * Classe 'ArticleController'
@@ -26,7 +25,7 @@ public class ArticleController {
     }
 
     public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
-        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+        return ResponseEntity.ok( ApiResponse.of(HttpStatus.OK.value(), message, data));
     }
 
     @GetMapping
