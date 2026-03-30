@@ -1,6 +1,7 @@
 package fr.eni.tpenistore1.core;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,6 +25,7 @@ public class BaseEntity {
     @Version
     private int version;
 
+    @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
@@ -38,7 +40,7 @@ public class BaseEntity {
     }
 
     public BaseEntity() {
-        createdAt = LocalDateTime.now();
+        //createdAt = LocalDateTime.now();
     }
 
     public String getId() {

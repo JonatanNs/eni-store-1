@@ -4,6 +4,7 @@ import fr.eni.tpenistore1.security.Jwt.JwtAuthFilter;
 import fr.eni.tpenistore1.security.Jwt.JwtService;
 import fr.eni.tpenistore1.security.e401.JwtAuthenticationEntryPoint;
 import fr.eni.tpenistore1.security.e403.JwtAccessDeniedHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 /**
  * Classe 'SecurityCOnfig' en charge de
@@ -32,12 +38,14 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint authenticationEntryPoint; // 401
     private final CustomUserDetailsService userDetailsService;
     private final JwtService jwtUtils;
+    private final String baseUrl;
 
-    public SecurityConfig(JwtAccessDeniedHandler accessDeniedHandler, JwtAuthenticationEntryPoint authenticationEntryPoint, CustomUserDetailsService userDetailsService, JwtService jwtUtils) {
+    public SecurityConfig(JwtAccessDeniedHandler accessDeniedHandler, JwtAuthenticationEntryPoint authenticationEntryPoint, CustomUserDetailsService userDetailsService, JwtService jwtUtils,@Value("${baseUrl}") String baseUrl) {
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.userDetailsService = userDetailsService;
         this.jwtUtils = jwtUtils;
+        this.baseUrl = baseUrl;
     }
 
     @Bean
@@ -56,11 +64,35 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        // Origines autorisées — jamais "*" en production
+        config.setAllowedOrigins(List.of(baseUrl)); // dev // production
+        // Méthodes HTTP autorisées — lister explicitement, éviter "*"
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // Headers autorisés dans les requêtes
+        config.setAllowedHeaders(List.of(
+                "Authorization",   // le JWT token
+                "Content-Type"     // application/json
+        ));
+        // Headers exposés dans la réponse — ce que Angular peut lire
+        config.setExposedHeaders(List.of("Authorization"));
+        // Autorise l'envoi du header Authorization et des cookies
+        config.setAllowCredentials(true);
+        // Durée de mise en cache de la réponse preflight (en secondes)
+        // Évite de renvoyer une preflight à chaque requête
+        config.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config); // appliqué à toutes les routes
+        return source;
+    }
+
+    @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN", "ADMIN_SUPER")
