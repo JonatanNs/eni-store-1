@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -25,18 +27,22 @@ public class PersonController {
         this.service = service;
     }
 
+    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
+        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<Page<PersonDTO>>> getAll(Pageable pageable) {
-        return service.getAll(pageable);
+        return buildResponse("Liste récupérée avec succès", service.getAll(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<PersonDTO>> getId(@PathVariable String id){
-        return service.getById(id);
+        return buildResponse("Element récupéré avec succès", service.getById(id));
     }
 
     @GetMapping("/email")
-    public ResponseEntity<ApiResponse<Optional<PersonDTO>>> getByEmail(@RequestParam String email) {
-        return service.findByEmail(email);
+    public ResponseEntity<ApiResponse<PersonDTO>> getByEmail(@RequestParam String email) {
+        return buildResponse("Element récupéré avec succès",service.findByEmail(email));
     }
 }

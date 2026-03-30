@@ -29,49 +29,36 @@ public class PersonService {
         this.personMapper = personMapper;
     }
 
-    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
-        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+    public Page<PersonDTO> getAll(Pageable pageable) {
+        return personDAO.getAll(pageable).map(personMapper::personToPersonDTO);
     }
 
-    public ResponseEntity<ApiResponse<Page<PersonDTO>>> getAll(Pageable pageable) {
-        Page<PersonDTO> persons = personDAO.getAll(pageable)
-                .map(personMapper::personToPersonDTO);
-        return buildResponse("Liste récupérée avec succès", persons);
+    public PersonDTO getById(String id) {
+        return personDAO.getById(id)
+                .map(personMapper::personToPersonDTO)
+                .orElseThrow(() -> new NotFoundException("Element non trouvé"));
     }
 
-    public ResponseEntity<ApiResponse<PersonDTO>> getById(String id) {
-        if(personDAO.getById(id).isPresent()){
-            return buildResponse("Element récupéré", personMapper.personToPersonDTO(personDAO.getById(id).get()));
-        }
-        throw new NotFoundException("Element non trouvé");
-    }
-
-    public ResponseEntity<ApiResponse<PersonDTO>> save(@Valid Person person) {
+    public PersonDTO save(Person person) {
         personDAO.save(person);
-        return buildResponse("Element enregistré", personMapper.personToPersonDTO(person));
+        return personMapper.personToPersonDTO(person);
     }
 
-    public ResponseEntity<ApiResponse<Person>> deleteById(String id) {
-        if(personDAO.getById(id).isPresent()){
-            personDAO.deleteById(id);
-            return buildResponse("Element supprimé",null);
-        }
-        throw new NotFoundException("Element non trouvé");
+    public PersonDTO deleteById(String id) {
+        Person person = personDAO.getById(id).orElseThrow(() -> new NotFoundException("Element non trouvé"));
+        personDAO.deleteById(id);
+        return personMapper.personToPersonDTO(person);
     }
 
-    public ResponseEntity<ApiResponse<PersonDTO>> update(String id, Person person) {
-        if(personDAO.getById(id).isPresent()){
-            personDAO.update(id,person);
-            return buildResponse("Element enregistré", personMapper.personToPersonDTO(person));
-        }
-        throw new NotFoundException("Element non trouvé");
+    public PersonDTO update(String id, Person person) {
+        personDAO.getById(id).orElseThrow(() -> new NotFoundException("Element non trouvé"));
+        personDAO.update(id, person);
+        return personMapper.personToPersonDTO(person);
     }
 
-    public ResponseEntity<ApiResponse<Optional<PersonDTO>>> findByEmail(String email) {
-        if(personDAO.findByEmail(email).isPresent()){
-            Optional<Person> person = personDAO.findByEmail(email);
-            return buildResponse("Element trouvé avec succès.", person.map(personMapper::personToPersonDTO));
-        }
-        throw new NotFoundException("Element non trouvé");
+    public PersonDTO findByEmail(String email) {
+        return personDAO.findByEmail(email)
+                .map(personMapper::personToPersonDTO)
+                .orElseThrow(() -> new NotFoundException("Element non trouvé"));
     }
 }
