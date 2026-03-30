@@ -17,7 +17,7 @@ import java.util.Optional;
  * @since 27/02/2026 14:30
  */
 @Service
-@Profile("sql")
+@Profile("mysql")
 public class PersonDAOSQL implements IPersonDAO {
 
     private final PersonSQLRepository repository;

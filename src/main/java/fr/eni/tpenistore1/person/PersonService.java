@@ -2,15 +2,9 @@ package fr.eni.tpenistore1.person;
 
 import fr.eni.tpenistore1.dtos.PersonDTO;
 import fr.eni.tpenistore1.exceptions.NotFoundException;
-import fr.eni.tpenistore1.record.ApiResponse;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * Classe 'PersonService'

@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/eni_store
+    username: ${USERNAME_DB}
+    password: ${PASSWORD_DB}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update

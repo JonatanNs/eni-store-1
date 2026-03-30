@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 /**
  * Classe 'AdmPersonController'
  *
@@ -24,18 +26,25 @@ public class AdmPersonController {
         this.service = service;
     }
 
+    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
+        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<PersonDTO>> create(@Valid @RequestBody Person person) {
-        return service.save(person);
+         service.save(person);
+        return buildResponse("Enregistrement éffectué avec succès", service.save(person));
     }
 
     @DeleteMapping("supprimer/{id}")
-    public ResponseEntity<ApiResponse<Person>> deleteById(@PathVariable String id) {
-        return service.deleteById(id);
+    public ResponseEntity<ApiResponse<PersonDTO>> deleteById(@PathVariable String id) {
+        service.deleteById(id);
+        return buildResponse("Suppréssion éffectué avec succès", service.deleteById(id));
     }
 
     @PatchMapping("modifier/{id}")
     public ResponseEntity<ApiResponse<PersonDTO>> update(@PathVariable String id, @Valid @RequestBody Person person) {
-        return service.update(id, person);
+        service.update(id, person);
+        return buildResponse("Modification éffectué avec succès", service.update(id, person));
     }
 }

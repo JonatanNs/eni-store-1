@@ -13,7 +13,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 27/02/2026 14:31
  */
-@Profile("sql")
+@Profile("mysql")
 public interface PersonSQLRepository extends JpaRepository<Person, String> {
     Optional<Person> findByEmail(String email);
 

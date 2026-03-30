@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 /**
  * Classe 'ArticleController'
@@ -25,18 +25,22 @@ public class ArticleController {
         this.service = service;
     }
 
+    public <T> ResponseEntity<ApiResponse<T>> buildResponse(String message, T data){
+        return ResponseEntity.ok(new ApiResponse<>("200", LocalDateTime.now(), message, data));
+    }
+
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<Article>>> getAll(Pageable pageable) throws RuntimeException {
-        return service.getAll(pageable);
+    public ResponseEntity<ApiResponse<Page<Article>>> getAll(Pageable pageable) {
+        return buildResponse("Liste récupérée avec succès", service.getAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Article>> getId(@PathVariable String id) throws RuntimeException{
-        return service.getById(id);
+    public ResponseEntity<ApiResponse<Article>> getId(@PathVariable String id){
+        return buildResponse("Element récupéré avec succès", service.getById(id));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Optional<Article>>> findByTitle(@RequestParam String title) {
-        return service.findByTitle(title);
+    public ResponseEntity<ApiResponse<Article>> getByTitle(@RequestParam String title) {
+        return buildResponse("Element récupéré avec succès",service.findByTitle(title));
     }
 }

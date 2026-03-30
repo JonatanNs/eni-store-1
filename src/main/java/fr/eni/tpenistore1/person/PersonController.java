@@ -2,13 +2,13 @@ package fr.eni.tpenistore1.person;
 
 import fr.eni.tpenistore1.dtos.PersonDTO;
 import fr.eni.tpenistore1.record.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * Classe 'PersonController'
@@ -41,8 +41,13 @@ public class PersonController {
         return buildResponse("Element récupéré avec succès", service.getById(id));
     }
 
+    @GetMapping("/modifier")
+    public ResponseEntity<ApiResponse<PersonDTO>> update(String id,@Valid Person person) {
+        return buildResponse("Element modifié avec succès", service.update(id, person));
+    }
+
     @GetMapping("/email")
-    public ResponseEntity<ApiResponse<PersonDTO>> getByEmail(@RequestParam String email) {
+    public ResponseEntity<ApiResponse<PersonDTO>> getByEmail(@Valid @RequestParam String email) {
         return buildResponse("Element récupéré avec succès",service.findByEmail(email));
     }
 }

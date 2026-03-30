@@ -15,7 +15,7 @@ import java.util.Optional;
  * @since 26/02/2026 14:46
  */
 
-@Profile("sql")
+@Profile("mysql")
 public interface ArticleSQLRepository extends JpaRepository<Article, String> {
     Optional<Article> findByTitle(String title);
 }
