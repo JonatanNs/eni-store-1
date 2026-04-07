@@ -1,5 +1,4 @@
 import { Routes } from "@angular/router";
-import path from "path";
 import { HomePage } from "../home/pages/home-page/home.page";
 import { AuthPage } from "./pages/auth-page/auth-page";
 

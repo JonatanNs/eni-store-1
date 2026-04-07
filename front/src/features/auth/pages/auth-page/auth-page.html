@@ -2,7 +2,6 @@
     <h1>Connexion/Inscription</h1>
     <article>
         <h2>Connexion</h2>
-        <p>Email: user@user.com | mdp: Motdepasse1234#</p>
         <form [formGroup]="loginForm">
             <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
                 <label class="label">Email</label>
@@ -23,7 +22,6 @@
     </article>
     <article>
         <h2>Inscription</h2>
-        <p>Email: user@user.com | mdp: Motdepasse1234#</p>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()">
             <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
                 <label class="label">Prénom</label>

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule, AbstractContro
 import { FORM_ERROR_MESSAGES } from '../../form.error.messages';
 import { IUser } from '../../../user/models/IUser';
 import { RegisterService } from '../../services/register-service';
-import { Observable } from 'rxjs/internal/Observable';
+import { GlobalErrorService } from '../../../../shared/services/globalError/global-error-service';
 
 @Component({
   selector: 'app-auth-page',
@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class AuthPage {
 
   private serviceRegister = inject(RegisterService);
+  private globalErrorService = inject(GlobalErrorService);
 
   registerForm = new FormGroup({
     firstName: new FormControl('James', [Validators.required, Validators.minLength(2)]),
@@ -66,20 +67,23 @@ export class AuthPage {
     return null;
   }
 
-  onSubmitRegister(): void {
-    console.log(this.registerForm.valid);
+  errorMessage: string | null = null;
+  
 
-    if (this.registerForm.invalid) {
-      console.log("form invalide");
-      return;
-    }
+  onSubmitRegister(): void {
+    if (this.registerForm.invalid) return;
 
     this.serviceRegister.createUser(this.registerForm.value as IUser)
       .subscribe({
         next: (user) => console.log(user),
-        error: (err) => console.error(err)
+        error: (err) => {
+          const msg = err.error?.message || "Une erreur est survenue";
+          this.globalErrorService.showError(msg); 
+          console.log(err);
+        }
       });
   }
 }
+
 
 

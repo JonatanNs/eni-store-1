@@ -49,3 +49,6 @@ build/
 
 # JVM crash
 hs_err_pid*.log
+/back/.gradle/8.14.4/executionHistory/
+/back/.gradle/8.14.4/
+/back/.gradle/
