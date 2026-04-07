@@ -1,11 +1,8 @@
 package fr.eni.tpenistore1.article;
 
-import fr.eni.tpenistore1.category.Category;
 import fr.eni.tpenistore1.core.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,16 +22,13 @@ public class Article extends BaseEntity {
     @NotBlank(message = "Le titre ne peut pas être null.")
     private String title;
 
-
     @NotNull(message = "Un article dois avoir une catégorie.")
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(name = "category_id")
+    private String category;
 
-    public Article() {
-    }
+    public Article() {}
 
-    public Article(String title, Category category) {
+    public Article(String title, String category) {
         this.title = title;
         this.category = category;
     }
@@ -47,11 +41,11 @@ public class Article extends BaseEntity {
         this.title = title;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 }
