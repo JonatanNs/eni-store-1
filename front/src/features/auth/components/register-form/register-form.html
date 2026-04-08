@@ -1,0 +1,38 @@
+<article>
+  <h2>Inscription</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()">
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <label class="label">Prénom</label>
+      <input type="text" formControlName="firstName" class="input" placeholder="Prénom" required />
+      @if(getFormError('firstName')){ <p class="text-red-500">{{ getFormError('firstName') }}</p>}
+    </fieldset>
+
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <label class="label">Nom</label>
+      <input type="text" formControlName="lastName" class="input" placeholder="Nom" required />
+      @if(getFormError('lastName')){ <p class="text-red-500">{{ getFormError('lastName') }}</p>}
+    </fieldset>
+
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <label class="label">Email</label>
+      <input type="email" formControlName="email" class="input" placeholder="Email" required />
+      @if(getFormError('email')){ <p class="text-red-500">{{ getFormError('email') }}</p>}
+    </fieldset>
+
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <label class="label">Mot de passe</label>
+      <input type="password" formControlName="password" class="input" placeholder="Mot de passe" required />
+      @if(getFormError('password')){<p class="text-red-500">{{ getFormError('password') }}</p> }
+    </fieldset>
+
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <label class="label">Confirme Mot de passe</label>
+      <input type="password" formControlName="confirmPassword" class="input" placeholder="Confirme mot de passe" required />
+      @if(getFormError('confirmPassword')){<p class="text-red-500">{{ getFormError('confirmPassword') }}</p> }
+    </fieldset>
+
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <button type="submit" class="btn btn-neutral mt-4">S'inscrire</button>
+    </fieldset>
+  </form>
+</article>
