@@ -12,10 +12,11 @@ import { RegisterService } from '../../services/register-service';
 import { GlobalErrorService } from '../../../../shared/services/globalError/global-error-service';
 import { IUser } from '../../../user/models/IUser';
 import { FORM_ERROR_MESSAGES } from '../../form.error.messages';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register-form.html',
   styleUrl: './register-form.scss',
 })

@@ -1,0 +1,105 @@
+<section>
+  <h1 class="text-center">Authentification - Connexion</h1>
+<article class="py-16">
+  <section class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+
+    <!-- Image -->
+    <aside
+      class="hidden lg:block lg:w-1/2 bg-cover"
+      style="background-image:url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?auto=format&fit=crop&w=667&q=80')">
+    </aside>
+
+    <!-- Form -->
+    <main class="w-full p-8 lg:w-1/2">
+
+      <header>
+        <h1 class="text-2xl font-semibold text-gray-700 text-center">ENI STORE</h1>
+        <p class="text-xl text-gray-600 text-center">Connexion</p>
+      </header>
+
+      <!-- Google login -->
+      <nav>
+        <a href="#" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
+          <span class="px-4 py-3">
+            <!-- SVG inchangé -->
+          </span>
+          <span class="px-4 py-3 w-5/6 text-center text-gray-600 font-bold">
+            Connexion avec Google
+          </span>
+        </a>
+      </nav>
+
+      <!-- Divider -->
+      <div class="mt-4 flex items-center justify-between" role="separator">
+        <span class="border-b w-1/5 lg:w-1/4"></span>
+        <span class="text-xs text-center text-gray-500 uppercase">Connexion avec email</span>
+        <span class="border-b w-1/5 lg:w-1/4"></span>
+      </div>
+
+      <!-- FORM -->
+      <form [formGroup]="loginForm" class="mt-4">
+
+        <!-- Email -->
+        <fieldset>
+          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full"
+            placeholder="Email" />
+
+          @if(getFormError('email')){
+            <p class="text-red-500 text-sm">{{ getFormError('email') }}</p>
+          }
+        </fieldset>
+
+        <!-- Password -->
+        <fieldset class="mt-4">
+          <div class="flex justify-between">
+            <label for="password" class="block text-gray-700 text-sm font-bold mb-2">
+              Mot de passe
+            </label>
+            <a href="#" class="text-xs text-gray-500">
+              Mot de passe oublié ?
+            </a>
+          </div>
+
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            class="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full"
+            placeholder="Mot de passe" />
+
+          @if(getFormError('password')){
+            <p class="text-red-500 text-sm">{{ getFormError('password') }}</p>
+          }
+        </fieldset>
+
+        <!-- Submit -->
+        <fieldset class="mt-8">
+          <button
+            type="submit"
+            class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
+            Se connecter
+          </button>
+        </fieldset>
+
+      </form>
+
+      <!-- Register -->
+      <div class="mt-4 flex items-center justify-between" >
+        <span class="border-b w-1/5 md:w-1/4"></span>
+        <a routerLink="/auth/inscription" class="text-xs text-gray-500 uppercase">
+          Inscription
+        </a>
+        <span class="border-b w-1/5 md:w-1/4"></span>
+      </div>
+
+    </main>
+  </section>
+</article>
+</section>

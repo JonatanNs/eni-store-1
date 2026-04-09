@@ -1,0 +1,128 @@
+<section>
+  <h1 class="text-center">Authentification - Inscription</h1>
+<article class="py-16">
+  <section class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+
+    <!-- Image -->
+    <aside
+      class="hidden lg:block lg:w-1/2 bg-cover"
+      style="background-image:url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80')">
+    </aside>
+
+    <!-- Form -->
+    <main class="w-full p-8 lg:w-1/2">
+
+      <header>
+        <h1 class="text-2xl font-semibold text-gray-700 text-center">ENI STORE</h1>
+        <p class="text-xl text-gray-600 text-center">Inscription</p>
+      </header>
+
+      <!-- FORM -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()" class="mt-6">
+
+        <!-- FirstName -->
+        <fieldset>
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Prénom
+          </label>
+          <input
+            type="text"
+            formControlName="firstName"
+            class="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full"
+            placeholder="Prénom" />
+
+          @if(getFormError('firstName')){
+            <p class="text-red-500 text-sm">{{ getFormError('firstName') }}</p>
+          }
+        </fieldset>
+
+        <!-- LastName -->
+        <fieldset class="mt-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Nom
+          </label>
+          <input
+            type="text"
+            formControlName="lastName"
+            class="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full"
+            placeholder="Nom" />
+
+          @if(getFormError('lastName')){
+            <p class="text-red-500 text-sm">{{ getFormError('lastName') }}</p>
+          }
+        </fieldset>
+
+        <!-- Email -->
+        <fieldset class="mt-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            formControlName="email"
+            class="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full"
+            placeholder="Email" />
+
+          @if(getFormError('email')){
+            <p class="text-red-500 text-sm">{{ getFormError('email') }}</p>
+          }
+        </fieldset>
+
+        <!-- Password -->
+        <fieldset class="mt-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Mot de passe
+          </label>
+          <input
+            type="password"
+            formControlName="password"
+            class="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full"
+            placeholder="Mot de passe" />
+
+          @if(getFormError('password')){
+            <p class="text-red-500 text-sm">{{ getFormError('password') }}</p>
+          }
+        </fieldset>
+
+        <!-- Confirm Password -->
+        <fieldset class="mt-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            Confirmer le mot de passe
+          </label>
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            class="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full"
+            placeholder="Confirme mot de passe" />
+
+          @if(getFormError('confirmPassword')){
+            <p class="text-red-500 text-sm">{{ getFormError('confirmPassword') }}</p>
+          }
+        </fieldset>
+
+        <!-- Submit -->
+        <fieldset class="mt-8">
+          <button
+            type="submit"
+            class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
+            S'inscrire
+          </button>
+        </fieldset>
+
+      </form>
+
+      <!-- Login redirect -->
+      <div class="mt-4 flex items-center justify-between">
+        <span class="border-b w-1/5 md:w-1/4"></span>
+        <a routerLink="/auth/connexion" class="text-xs text-gray-500 uppercase">
+          Déjà un compte ?
+        </a>
+        <span class="border-b w-1/5 md:w-1/4"></span>
+      </div>
+
+    </main>
+  </section>
+</article>
+</section>
+
+

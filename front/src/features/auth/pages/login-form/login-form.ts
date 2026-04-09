@@ -3,10 +3,11 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RegisterService } from '../../services/register-service';
 import { GlobalErrorService } from '../../../../shared/services/globalError/global-error-service';
 import { FORM_ERROR_MESSAGES } from '../../form.error.messages';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login-form.html',
   styleUrl: './login-form.scss',
 })
@@ -21,7 +22,6 @@ export class LoginForm {
   });
 
   getFormError(controlName: string): string | null {
-
     const control = this.loginForm.get(controlName);
 
     if (!control || !control.touched || !control.errors) return null;
